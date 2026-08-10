@@ -10,8 +10,12 @@ const dist = path.join(__dirname, 'dist')
 app.use(express.static(dist))
 
 // SPA fallback: serve index.html for client-side routes
-app.get('*', (req, res) => {
-  res.sendFile(path.join(dist, 'index.html'))
+// (Express 5 / path-to-regexp v8 no longer accepts '*' routes)
+app.use((req, res, next) => {
+  if (req.method === 'GET' && !req.path.startsWith('/api/')) {
+    return res.sendFile(path.join(dist, 'index.html'))
+  }
+  next()
 })
 
 app.listen(PORT, () => {
