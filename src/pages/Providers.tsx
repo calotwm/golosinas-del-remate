@@ -83,10 +83,10 @@ export default function Providers() {
               {providers.map((p) => (
                 <tr
                   key={p.id}
-                  className="cursor-pointer transition-colors hover:bg-blue-50/50"
+                  className="cursor-pointer transition-colors hover:bg-white/[0.03]"
                   onClick={() => navigate(`/proveedores/${p.id}`)}
                 >
-                  <Td className="font-medium text-blue-600">{p.name}</Td>
+                  <Td className="font-medium text-[var(--color-primary)]">{p.name}</Td>
                   <Td className="tabular-nums">{p.cuit}</Td>
                   <Td className="tabular-nums">{p.phone}</Td>
                   <Td>{p.email}</Td>
@@ -145,7 +145,7 @@ export default function Providers() {
           </Field>
         </div>
         {error && (
-          <p className="mt-3 rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">{error}</p>
+          <p className="mt-3 rounded-[12px] border border-[rgba(239,68,68,0.3)] bg-[rgba(239,68,68,0.08)] px-3 py-2 text-sm text-[var(--color-danger)]">{error}</p>
         )}
       </Modal>
     </div>

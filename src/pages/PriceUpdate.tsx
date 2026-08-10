@@ -151,24 +151,27 @@ export default function PriceUpdate() {
 
   const latestChange = priceChanges[0]
 
+  const tabCls = (active: boolean) =>
+    `rounded-full px-3 py-1.5 text-sm font-medium transition-colors ${
+      active
+        ? 'bg-[var(--color-primary)] text-[var(--color-ink-on-dark)]'
+        : 'text-[var(--color-mute-on-dark)] hover:text-[var(--color-ink-on-dark)]'
+    }`
+
   return (
     <div className="mx-auto flex max-w-6xl flex-col gap-6">
-      <div className="flex w-fit rounded-md border border-gray-300 p-0.5">
+      <div className="flex w-fit rounded-full border border-[var(--color-hairline-dark)] bg-[var(--color-surface-deep)] p-0.5">
         <button
           type="button"
           onClick={() => setTab('update')}
-          className={`rounded px-3 py-1.5 text-sm font-medium transition-colors ${
-            tab === 'update' ? 'bg-blue-600 text-white' : 'text-gray-600 hover:text-gray-900'
-          }`}
+          className={tabCls(tab === 'update')}
         >
           Actualizar precios
         </button>
         <button
           type="button"
           onClick={() => setTab('history')}
-          className={`rounded px-3 py-1.5 text-sm font-medium transition-colors ${
-            tab === 'history' ? 'bg-blue-600 text-white' : 'text-gray-600 hover:text-gray-900'
-          }`}
+          className={tabCls(tab === 'history')}
         >
           Historial de cambios
         </button>
@@ -177,7 +180,7 @@ export default function PriceUpdate() {
       {tab === 'update' ? (
         <>
       <Card title="Actualización de precios">
-        <p className="mb-4 text-sm text-gray-500">
+        <p className="mb-4 text-sm text-[var(--color-dim-on-dark)]">
           Modifique los precios de venta de un proveedor mediante un porcentaje o un monto fijo. La
           modificación queda registrada en el historial y no altera las ventas ya registradas.
         </p>
@@ -208,7 +211,7 @@ export default function PriceUpdate() {
           >
             <div className="relative">
               {changeType === 'Monto fijo' && (
-                <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm text-gray-400">
+                <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm text-[var(--color-dim-on-dark)]">
                   $
                 </span>
               )}
@@ -221,7 +224,7 @@ export default function PriceUpdate() {
                 className={changeType === 'Monto fijo' ? 'pl-7 pr-14' : 'pr-14'}
               />
               {changeType === 'Porcentaje' && (
-                <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-400">
+                <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-sm text-[var(--color-dim-on-dark)]">
                   %
                 </span>
               )}
@@ -230,25 +233,25 @@ export default function PriceUpdate() {
         </div>
 
         <div className="mt-5">
-          <p className="mb-2 text-sm font-medium text-gray-700">Aplicar a</p>
+          <p className="mb-2 text-sm font-medium text-[var(--color-mute-on-dark)]">Aplicar a</p>
           <div className="flex flex-wrap gap-4">
-            <label className="flex cursor-pointer items-center gap-2 text-sm text-gray-700">
+            <label className="flex cursor-pointer items-center gap-2 text-sm text-[var(--color-mute-on-dark)]">
               <input
                 type="radio"
                 name="scope"
                 checked={scope === 'all'}
                 onChange={() => setScope('all')}
-                className="h-4 w-4 accent-blue-600"
+                className="h-4 w-4 accent-[var(--color-primary)]"
               />
               Todos los productos del proveedor
             </label>
-            <label className="flex cursor-pointer items-center gap-2 text-sm text-gray-700">
+            <label className="flex cursor-pointer items-center gap-2 text-sm text-[var(--color-mute-on-dark)]">
               <input
                 type="radio"
                 name="scope"
                 checked={scope === 'selected'}
                 onChange={() => setScope('selected')}
-                className="h-4 w-4 accent-blue-600"
+                className="h-4 w-4 accent-[var(--color-primary)]"
               />
               Productos seleccionados ({selected.size})
             </label>
@@ -258,7 +261,7 @@ export default function PriceUpdate() {
         {scope === 'selected' && provider && (
           <div className="mt-4">
             <div className="relative mb-3">
-              <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+              <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--color-dim-on-dark)]" />
               <Input
                 value={selectionQuery}
                 onChange={(e) => setSelectionQuery(e.target.value)}
@@ -266,14 +269,14 @@ export default function PriceUpdate() {
                 className="pl-9"
               />
             </div>
-            <div className="max-h-64 overflow-y-auto rounded-lg border border-gray-200">
+            <div className="max-h-64 overflow-y-auto rounded-[16px] border border-[var(--color-hairline-dark)]">
               <table className="w-full border-collapse text-sm">
-                <thead className="sticky top-0 z-10 bg-gray-50">
-                  <tr className="text-left text-xs uppercase tracking-wide text-gray-500">
+                <thead className="sticky top-0 z-10 bg-[var(--color-surface-deep)]">
+                  <tr className="text-left text-xs uppercase tracking-wide text-[var(--color-dim-on-dark)]">
                     <th className="w-10 px-3 py-2">
                       <input
                         type="checkbox"
-                        className="h-4 w-4 accent-blue-600"
+                        className="h-4 w-4 accent-[var(--color-primary)]"
                         checked={filteredSelection.length > 0 && filteredSelection.every((p) => selected.has(p.id))}
                         onChange={toggleAllVisible}
                       />
@@ -282,20 +285,20 @@ export default function PriceUpdate() {
                     <th className="px-3 py-2 text-right font-semibold">Precio actual</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-100">
+                <tbody className="divide-y divide-white/[0.06]">
                   {filteredSelection.map((p) => (
-                    <tr key={p.id} className="hover:bg-gray-50">
+                    <tr key={p.id} className="hover:bg-white/[0.03]">
                       <td className="px-3 py-2">
                         <input
                           type="checkbox"
-                          className="h-4 w-4 accent-blue-600"
+                          className="h-4 w-4 accent-[var(--color-primary)]"
                           checked={selected.has(p.id)}
                           onChange={() => toggleSelect(p.id)}
                         />
                       </td>
                       <td className="px-3 py-2">
-                        <p className="font-medium text-gray-800">{p.name}</p>
-                        <p className="text-xs text-gray-500">{p.code}</p>
+                        <p className="font-medium text-[var(--color-ink-on-dark)]">{p.name}</p>
+                        <p className="text-xs text-[var(--color-dim-on-dark)]">{p.code}</p>
                       </td>
                       <td className="px-3 py-2 text-right tabular-nums">{formatARS(p.price)}</td>
                     </tr>
@@ -312,8 +315,10 @@ export default function PriceUpdate() {
         actions={
           provider && hasValidValue ? (
             <span
-              className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium ring-1 ring-inset ${
-                positive ? 'bg-red-50 text-red-700 ring-red-600/20' : 'bg-green-50 text-green-700 ring-green-600/20'
+              className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-medium ${
+                positive
+                  ? 'border-[rgba(239,68,68,0.35)] text-[var(--color-danger)]'
+                  : 'border-[rgba(34,197,94,0.35)] text-[var(--color-success)]'
               }`}
             >
               {positive ? <ArrowUp className="h-3.5 w-3.5" /> : <ArrowDown className="h-3.5 w-3.5" />}
@@ -330,10 +335,10 @@ export default function PriceUpdate() {
           />
         ) : (
           <>
-            <p className="mb-3 text-sm text-gray-700">
-              Se modificarán <strong>{formatNumber(affectedCount)}</strong> productos.
+            <p className="mb-3 text-sm text-[var(--color-mute-on-dark)]">
+              Se modificarán <strong className="text-[var(--color-ink-on-dark)]">{formatNumber(affectedCount)}</strong> productos.
             </p>
-            <div className="max-h-80 overflow-y-auto rounded-lg border border-gray-200">
+            <div className="max-h-80 overflow-y-auto rounded-[16px] border border-[var(--color-hairline-dark)]">
               <Table>
                 <THead>
                   <Th>Código</Th>
@@ -344,16 +349,16 @@ export default function PriceUpdate() {
                 </THead>
                 <TBody>
                   {preview.map((row) => (
-                    <tr key={row.product.id} className="hover:bg-gray-50">
-                      <Td className="text-xs tabular-nums text-gray-500">{row.product.code}</Td>
-                      <Td className="font-medium text-gray-800">{row.product.name}</Td>
-                      <Td className="text-right tabular-nums text-gray-500">{formatARS(row.oldPrice)}</Td>
-                      <Td className="text-right font-semibold tabular-nums text-gray-800">
+                    <tr key={row.product.id} className="hover:bg-white/[0.03]">
+                      <Td className="text-xs tabular-nums text-[var(--color-dim-on-dark)]">{row.product.code}</Td>
+                      <Td className="font-medium text-[var(--color-ink-on-dark)]">{row.product.name}</Td>
+                      <Td className="text-right tabular-nums text-[var(--color-dim-on-dark)]">{formatARS(row.oldPrice)}</Td>
+                      <Td className="text-right font-semibold tabular-nums text-[var(--color-ink-on-dark)]">
                         {formatARS(row.newPrice)}
                       </Td>
                       <Td
                         className={`text-right tabular-nums ${
-                          row.variation > 0 ? 'text-red-600' : row.variation < 0 ? 'text-green-600' : 'text-gray-500'
+                          row.variation > 0 ? 'text-[var(--color-danger)]' : row.variation < 0 ? 'text-[var(--color-success)]' : 'text-[var(--color-dim-on-dark)]'
                         }`}
                       >
                         {row.variation > 0 ? '+' : ''}
@@ -366,13 +371,13 @@ export default function PriceUpdate() {
             </div>
 
             {error && (
-              <p className="mt-3 rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
+              <p className="mt-3 rounded-[12px] border border-[rgba(239,68,68,0.3)] bg-[rgba(239,68,68,0.08)] px-3 py-2 text-sm text-[var(--color-danger)]">
                 {error}
               </p>
             )}
 
-            <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-gray-200 pt-4">
-              <p className="text-xs text-gray-500">
+            <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-[var(--color-hairline-dark)] pt-4">
+              <p className="text-xs text-[var(--color-dim-on-dark)]">
                 {latestChange
                   ? `Última modificación: ${latestChange.description} · ${latestChange.affectedCount} productos`
                   : 'No hay modificaciones registradas'}
@@ -408,9 +413,9 @@ export default function PriceUpdate() {
         confirmLabel="Confirmar actualización"
         message={
           <>
-            Se modificarán <strong>{formatNumber(affectedCount)}</strong> productos de{' '}
-            <strong>{provider?.name}</strong> con {positive ? 'un aumento' : 'una reducción'} de{' '}
-            <strong>{magnitude}</strong>. La operación quedará registrada en el historial de precios.
+            Se modificarán <strong className="text-[var(--color-ink-on-dark)]">{formatNumber(affectedCount)}</strong> productos de{' '}
+            <strong className="text-[var(--color-ink-on-dark)]">{provider?.name}</strong> con {positive ? 'un aumento' : 'una reducción'} de{' '}
+            <strong className="text-[var(--color-ink-on-dark)]">{magnitude}</strong>. La operación quedará registrada en el historial de precios.
           </>
         }
         />

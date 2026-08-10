@@ -122,12 +122,13 @@ export function totalsByClient(sales: Sale[], clients: Client[]): NamedTotal[] {
   const byId = new Map(clients.map((c) => [c.id, c]))
   const map = new Map<string, NamedTotal>()
   for (const s of completedSales(sales)) {
-    const label = byId.get(s.clientId)?.name ?? 'Cliente eliminado'
-    const cur = map.get(s.clientId) ?? { key: s.clientId, label, total: 0, count: 0, qty: 0 }
+    const clientKey = s.clientId ?? ''
+    const label = byId.get(clientKey)?.name ?? 'Cliente eliminado'
+    const cur = map.get(clientKey) ?? { key: clientKey, label, total: 0, count: 0, qty: 0 }
     cur.total = round2(cur.total + s.total)
     cur.count += 1
     cur.qty += s.items.reduce((q, it) => q + it.quantity, 0)
-    map.set(s.clientId, cur)
+    map.set(clientKey, cur)
   }
   return [...map.values()].sort((a, b) => b.total - a.total)
 }

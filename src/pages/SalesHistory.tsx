@@ -12,7 +12,6 @@ import {
   Input,
   Modal,
   Select,
-  StatusBadge,
   Table,
   TBody,
   Td,
@@ -24,28 +23,24 @@ import { formatARS, formatDate, formatNumber, round2 } from '../utils/format'
 
 export default function SalesHistory() {
   const { setSaleStatus } = useApp()
-  const { sales, clients } = useApp().state
+  const { sales } = useApp().state
   const toast = useToast()
 
   const [from, setFrom] = useState('')
   const [to, setTo] = useState('')
-  const [clientId, setClientId] = useState('')
   const [paymentMethod, setPaymentMethod] = useState('')
   const [selected, setSelected] = useState<Sale | null>(null)
-
-  const clientOf = new Map(clients.map((c) => [c.id, c.name]))
 
   const filtered = useMemo(() => {
     return [...sales]
       .filter((s) => {
         if (from && s.date < from) return false
         if (to && s.date > to) return false
-        if (clientId && s.clientId !== clientId) return false
         if (paymentMethod && s.paymentMethod !== paymentMethod) return false
         return true
       })
       .sort((a, b) => (a.date === b.date ? b.number - a.number : a.date < b.date ? 1 : -1))
-  }, [sales, from, to, clientId, paymentMethod])
+  }, [sales, from, to, paymentMethod])
 
   const quantityOf = (s: Sale) => s.items.reduce((acc, it) => acc + it.quantity, 0)
 
@@ -59,22 +54,12 @@ export default function SalesHistory() {
   return (
     <div className="flex flex-col gap-6">
       <Card title="Historial de ventas">
-        <div className="mb-4 grid grid-cols-1 gap-4 md:grid-cols-4">
+        <div className="mb-4 grid grid-cols-1 gap-4 md:grid-cols-3">
           <Field label="Fecha desde">
             <Input type="date" value={from} onChange={(e) => setFrom(e.target.value)} />
           </Field>
           <Field label="Fecha hasta">
             <Input type="date" value={to} onChange={(e) => setTo(e.target.value)} />
-          </Field>
-          <Field label="Cliente">
-            <Select value={clientId} onChange={(e) => setClientId(e.target.value)}>
-              <option value="">Todos los clientes</option>
-              {clients.map((c) => (
-                <option key={c.id} value={c.id}>
-                  {c.name}
-                </option>
-              ))}
-            </Select>
           </Field>
           <Field label="Forma de pago">
             <Select value={paymentMethod} onChange={(e) => setPaymentMethod(e.target.value as PaymentMethod | '')}>
@@ -102,7 +87,6 @@ export default function SalesHistory() {
             <THead>
               <Th>Número</Th>
               <Th>Fecha</Th>
-              <Th>Cliente</Th>
               <Th className="text-right">Productos</Th>
               <Th className="text-right">Total</Th>
               <Th>Forma de pago</Th>
@@ -112,16 +96,21 @@ export default function SalesHistory() {
               {filtered.map((s) => (
                 <tr
                   key={s.id}
-                  className="cursor-pointer transition-colors hover:bg-blue-50/50"
+                  className="cursor-pointer transition-colors hover:bg-white/[0.03]"
                   onClick={() => setSelected(s)}
                 >
-                  <Td className="font-medium text-blue-600">#{s.number}</Td>
+                  <Td className="font-medium text-[var(--color-primary)]">#{s.number}</Td>
                   <Td>{formatDate(s.date)}</Td>
-                  <Td>{clientOf.get(s.clientId) ?? 'Cliente eliminado'}</Td>
                   <Td className="text-right tabular-nums">{formatNumber(quantityOf(s))}</Td>
-                  <Td className="text-right font-medium tabular-nums text-gray-800">{formatARS(s.total)}</Td>
+                  <Td className="text-right font-medium tabular-nums text-[var(--color-ink-on-dark)]">{formatARS(s.total)}</Td>
                   <Td>{s.paymentMethod}</Td>
-                  <Td>{s.status === 'Completada' ? <StatusBadge status="Activo" /> : <Badge tone="gray">Anulada</Badge>}</Td>
+                  <Td>
+                    {s.status === 'Completada' ? (
+                      <Badge tone="green">Completada</Badge>
+                    ) : (
+                      <Badge tone="amber">Anulada</Badge>
+                    )}
+                  </Td>
                 </tr>
               ))}
             </TBody>
@@ -136,8 +125,7 @@ export default function SalesHistory() {
         subtitle={
           selected ? (
             <span className="flex items-center gap-2">
-              {formatDate(selected.date)} · {clientOf.get(selected.clientId) ?? 'Cliente eliminado'} ·{' '}
-              {selected.paymentMethod}
+              {formatDate(selected.date)} · {selected.paymentMethod}
             </span>
           ) : undefined
         }
@@ -169,35 +157,33 @@ export default function SalesHistory() {
         {selected && (
           <div className="flex flex-col gap-4">
             <div className="flex flex-wrap gap-3 text-sm">
-              <span className="rounded-md bg-gray-100 px-2.5 py-1 text-gray-700">
-                {selected.status === 'Completada' ? (
-                  <Badge tone="green">Completada</Badge>
-                ) : (
-                  <Badge tone="gray">Anulada</Badge>
-                )}
-              </span>
-              <span className="rounded-md bg-gray-100 px-2.5 py-1 text-gray-700">
+              {selected.status === 'Completada' ? (
+                <Badge tone="green">Completada</Badge>
+              ) : (
+                <Badge tone="amber">Anulada</Badge>
+              )}
+              <span className="rounded-full border border-[var(--color-hairline-dark)] px-2.5 py-0.5 text-sm text-[var(--color-mute-on-dark)]">
                 {selected.items.length} líneas de detalle
               </span>
             </div>
 
-            <div className="overflow-x-auto rounded-lg border border-gray-200">
+            <div className="overflow-x-auto rounded-[16px] border border-[var(--color-hairline-dark)]">
               <table className="w-full border-collapse text-sm">
                 <thead>
-                  <tr className="border-b border-gray-200 bg-gray-50 text-left text-xs uppercase tracking-wide text-gray-500">
+                  <tr className="border-b border-[var(--color-hairline-dark)] bg-[var(--color-surface-deep)] text-left text-xs uppercase tracking-wide text-[var(--color-dim-on-dark)]">
                     <th className="px-4 py-3 font-semibold">Producto</th>
                     <th className="px-4 py-3 text-right font-semibold">Precio unitario</th>
                     <th className="px-4 py-3 text-center font-semibold">Cantidad</th>
                     <th className="px-4 py-3 text-right font-semibold">Subtotal</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-100">
+                <tbody className="divide-y divide-white/[0.06]">
                   {selected.items.map((it, i) => (
                     <tr key={i}>
-                      <td className="px-4 py-2.5 font-medium text-gray-800">{it.productName}</td>
+                      <td className="px-4 py-2.5 font-medium text-[var(--color-ink-on-dark)]">{it.productName}</td>
                       <td className="px-4 py-2.5 text-right tabular-nums">{formatARS(it.unitPrice)}</td>
                       <td className="px-4 py-2.5 text-center tabular-nums">{formatNumber(it.quantity)}</td>
-                      <td className="px-4 py-2.5 text-right tabular-nums text-gray-800">
+                      <td className="px-4 py-2.5 text-right tabular-nums text-[var(--color-ink-on-dark)]">
                         {formatARS(it.subtotal)}
                       </td>
                     </tr>
@@ -206,11 +192,11 @@ export default function SalesHistory() {
               </table>
             </div>
 
-            <div className="flex items-center justify-between rounded-lg bg-gray-50 px-4 py-3">
-              <span className="text-sm text-gray-600">
+            <div className="flex items-center justify-between rounded-[12px] border border-[var(--color-hairline-dark)] bg-[var(--color-surface-deep)] px-4 py-3">
+              <span className="text-sm text-[var(--color-mute-on-dark)]">
                 Total {selected.paymentMethod} · precios de venta al {formatDate(selected.date)}
               </span>
-              <span className="text-lg font-semibold tabular-nums text-gray-900">
+              <span className="font-[var(--font-display)] text-lg font-medium tabular-nums text-[var(--color-ink-on-dark)]">
                 {formatARS(round2(selected.total))}
               </span>
             </div>

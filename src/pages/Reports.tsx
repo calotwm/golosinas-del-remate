@@ -12,9 +12,21 @@ const TABS: Array<{ key: ReportTab; label: string }> = [
   { key: 'top-productos', label: 'Productos más vendidos' },
 ]
 
+const GRID = '#26262a'
+const AXIS_TICK = { fontSize: 12, fill: 'rgba(255,255,255,0.45)' }
+const AXIS_TICK_SM = { fontSize: 11, fill: 'rgba(255,255,255,0.45)' }
+const TOOLTIP_STYLE = {
+  backgroundColor: '#16181a',
+  border: '1px solid rgba(255,255,255,0.12)',
+  borderRadius: 12,
+  color: '#fff',
+  fontSize: 13,
+}
+const TOOLTIP_CURSOR = { fill: 'rgba(255,255,255,0.06)' }
+
 export default function Reports() {
   const { state } = useApp()
-  const { sales, clients, products, providers } = state
+  const { sales, products, providers } = state
 
   const today = todayISO()
   const [tab, setTab] = useState<ReportTab>('ventas')
@@ -27,7 +39,6 @@ export default function Reports() {
     [sales, from, to, invalidRange],
   )
 
-  const clientOf = new Map(clients.map((c) => [c.id, c.name]))
   const providerOf = new Map(products.map((p) => [p.id, p.providerId]))
   const providerName = new Map(providers.map((p) => [p.id, p.name]))
 
@@ -48,14 +59,16 @@ export default function Reports() {
     <div className="flex flex-col gap-6">
       <Card>
         <div className="flex flex-wrap items-end justify-between gap-4">
-          <div className="flex rounded-md border border-gray-300 p-0.5">
+          <div className="flex rounded-full border border-[var(--color-hairline-dark)] bg-[var(--color-surface-deep)] p-0.5">
             {TABS.map((t) => (
               <button
                 key={t.key}
                 type="button"
                 onClick={() => setTab(t.key)}
-                className={`rounded px-3 py-1.5 text-sm font-medium transition-colors ${
-                  tab === t.key ? 'bg-blue-600 text-white' : 'text-gray-600 hover:text-gray-900'
+                className={`rounded-full px-3 py-1.5 text-sm font-medium transition-colors ${
+                  tab === t.key
+                    ? 'bg-[var(--color-primary)] text-[var(--color-ink-on-dark)]'
+                    : 'text-[var(--color-mute-on-dark)] hover:text-[var(--color-ink-on-dark)]'
                 }`}
               >
                 {t.label}
@@ -76,13 +89,13 @@ export default function Reports() {
       {tab === 'ventas' ? (
         <>
           <div className="flex flex-wrap gap-3 text-sm">
-            <span className="rounded-lg border border-gray-200 bg-white px-4 py-3 shadow-sm">
+            <span className="rounded-[20px] border border-[var(--color-hairline-dark)] bg-[var(--color-surface-elevated)] px-4 py-3">
               Ventas en el período:{' '}
-              <span className="font-semibold tabular-nums text-gray-900">{formatNumber(inRange.length)}</span>
+              <span className="font-[var(--font-display)] font-medium tabular-nums text-[var(--color-ink-on-dark)]">{formatNumber(inRange.length)}</span>
             </span>
-            <span className="rounded-lg border border-gray-200 bg-white px-4 py-3 shadow-sm">
+            <span className="rounded-[20px] border border-[var(--color-hairline-dark)] bg-[var(--color-surface-elevated)] px-4 py-3">
               Facturación:{' '}
-              <span className="font-semibold tabular-nums text-gray-900">{formatARS(sumTotals(inRange))}</span>
+              <span className="font-[var(--font-display)] font-medium tabular-nums text-[var(--color-ink-on-dark)]">{formatARS(sumTotals(inRange))}</span>
             </span>
           </div>
 
@@ -96,14 +109,15 @@ export default function Reports() {
               <div className="h-64">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={dailyTotals} margin={{ top: 8, right: 8, left: 8, bottom: 0 }}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" vertical={false} />
-                    <XAxis dataKey="label" tick={{ fontSize: 12, fill: '#6b7280' }} tickLine={false} axisLine={false} />
-                    <YAxis tick={{ fontSize: 12, fill: '#6b7280' }} tickLine={false} axisLine={false} width={80} />
+                    <CartesianGrid strokeDasharray="3 3" stroke={GRID} vertical={false} />
+                    <XAxis dataKey="label" tick={AXIS_TICK} tickLine={false} axisLine={false} />
+                    <YAxis tick={AXIS_TICK} tickLine={false} axisLine={false} width={80} />
                     <Tooltip
                       formatter={(value) => formatARS(Number(value))}
-                      contentStyle={{ borderRadius: 8, border: '1px solid #e5e7eb', fontSize: 13 }}
+                      contentStyle={TOOLTIP_STYLE}
+                      cursor={TOOLTIP_CURSOR}
                     />
-                    <Bar dataKey="total" name="Facturación" fill="#2563eb" radius={[4, 4, 0, 0]} barSize={28} />
+                    <Bar dataKey="total" name="Facturación" fill="#dc2626" radius={[4, 4, 0, 0]} barSize={28} />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
@@ -121,7 +135,7 @@ export default function Reports() {
                 <THead>
                   <Th>Número</Th>
                   <Th>Fecha</Th>
-                  <Th>Cliente</Th>
+                  <Th className="text-right">Productos</Th>
                   <Th className="text-right">Total</Th>
                   <Th>Forma de pago</Th>
                 </THead>
@@ -129,11 +143,13 @@ export default function Reports() {
                   {[...inRange]
                     .sort((a, b) => (a.date === b.date ? b.number - a.number : a.date < b.date ? 1 : -1))
                     .map((s) => (
-                      <tr key={s.id} className="hover:bg-gray-50">
-                        <Td className="font-medium text-gray-800">#{s.number}</Td>
+                      <tr key={s.id} className="hover:bg-white/[0.03]">
+                        <Td className="font-medium text-[var(--color-ink-on-dark)]">#{s.number}</Td>
                         <Td>{formatDate(s.date)}</Td>
-                        <Td>{clientOf.get(s.clientId) ?? 'Cliente eliminado'}</Td>
-                        <Td className="text-right font-medium tabular-nums text-gray-800">{formatARS(s.total)}</Td>
+                        <Td className="text-right tabular-nums">
+                          {formatNumber(s.items.reduce((acc, it) => acc + it.quantity, 0))}
+                        </Td>
+                        <Td className="text-right font-medium tabular-nums text-[var(--color-ink-on-dark)]">{formatARS(s.total)}</Td>
                         <Td>{s.paymentMethod}</Td>
                       </tr>
                     ))}
@@ -158,21 +174,22 @@ export default function Reports() {
                     layout="vertical"
                     margin={{ top: 4, right: 24, left: 8, bottom: 0 }}
                   >
-                    <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" horizontal={false} />
-                    <XAxis type="number" tick={{ fontSize: 12, fill: '#6b7280' }} tickLine={false} axisLine={false} />
+                    <CartesianGrid strokeDasharray="3 3" stroke={GRID} horizontal={false} />
+                    <XAxis type="number" tick={AXIS_TICK_SM} tickLine={false} axisLine={false} />
                     <YAxis
                       type="category"
                       dataKey="name"
                       width={160}
-                      tick={{ fontSize: 11, fill: '#6b7280' }}
+                      tick={AXIS_TICK_SM}
                       tickLine={false}
                       axisLine={false}
                     />
                     <Tooltip
                       formatter={(value) => `${formatNumber(Number(value))} unidades`}
-                      contentStyle={{ borderRadius: 8, border: '1px solid #e5e7eb', fontSize: 13 }}
+                      contentStyle={TOOLTIP_STYLE}
+                      cursor={TOOLTIP_CURSOR}
                     />
-                    <Bar dataKey="Cantidad" fill="#2563eb" radius={[0, 4, 4, 0]} barSize={14} />
+                    <Bar dataKey="Cantidad" fill="#dc2626" radius={[0, 4, 4, 0]} barSize={14} />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
@@ -186,11 +203,11 @@ export default function Reports() {
                 </THead>
                 <TBody>
                   {topProducts.map((p) => (
-                    <tr key={p.key} className="hover:bg-gray-50">
-                      <Td className="font-medium text-gray-800">{p.label}</Td>
+                    <tr key={p.key} className="hover:bg-white/[0.03]">
+                      <Td className="font-medium text-[var(--color-ink-on-dark)]">{p.label}</Td>
                       <Td>{providerName.get(providerOf.get(p.key) ?? '') ?? 'Sin proveedor'}</Td>
                       <Td className="text-right tabular-nums">{formatNumber(p.qty)}</Td>
-                      <Td className="text-right font-medium tabular-nums text-gray-800">{formatARS(p.total)}</Td>
+                      <Td className="text-right font-medium tabular-nums text-[var(--color-ink-on-dark)]">{formatARS(p.total)}</Td>
                     </tr>
                   ))}
                 </TBody>

@@ -1,17 +1,8 @@
 import { useEffect, useState } from 'react'
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
-import {
-  BarChart3,
-  Factory,
-  LayoutDashboard,
-  Menu,
-  Percent,
-  ShoppingCart,
-  Store,
-  User,
-  X,
-} from 'lucide-react'
+import { BarChart3, Factory, LayoutDashboard, Menu, Percent, ShoppingCart, X } from 'lucide-react'
 import { useApp } from '../context/AppContext'
+import { GrainOverlay } from './ui'
 import { formatDate, todayISO } from '../utils/format'
 
 interface NavItem {
@@ -53,8 +44,8 @@ function isActive(item: NavItem, pathname: string): boolean {
 
 function NavList({ pathname, onNavigate }: { pathname: string; onNavigate?: () => void }) {
   return (
-    <nav className="flex flex-1 flex-col gap-0.5 overflow-y-auto px-3 py-4">
-      <p className="px-3 pb-2 text-[11px] font-semibold uppercase tracking-wider text-slate-500">
+    <nav className="flex flex-1 flex-col gap-1 overflow-y-auto px-3 py-4">
+      <p className="px-4 pb-2 text-[11px] font-semibold uppercase tracking-wider text-[var(--color-faint-on-dark)]">
         Menú principal
       </p>
       {mainNav.map((item) => {
@@ -65,10 +56,10 @@ function NavList({ pathname, onNavigate }: { pathname: string; onNavigate?: () =
             to={item.path}
             end={item.exact}
             onClick={onNavigate}
-            className={`flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors ${
+            className={`flex items-center gap-3 rounded-full px-4 py-2.5 text-sm font-medium transition-all duration-200 ${
               active
-                ? 'bg-blue-600 font-medium text-white'
-                : 'text-slate-300 hover:bg-slate-800 hover:text-white'
+                ? 'bg-[var(--color-primary)] text-[var(--color-ink-on-dark)]'
+                : 'text-[var(--color-mute-on-dark)] hover:bg-white/5 hover:text-[var(--color-ink-on-dark)]'
             }`}
           >
             <item.icon className="h-[18px] w-[18px] shrink-0" />
@@ -89,9 +80,11 @@ export default function Layout() {
   }, [location.pathname])
 
   return (
-    <div className="flex min-h-screen bg-slate-100">
+    <div className="flex h-screen overflow-hidden">
+      <GrainOverlay />
+
       {/* Desktop sidebar */}
-      <aside className="sticky top-0 hidden h-screen w-64 shrink-0 flex-col bg-slate-900 lg:flex">
+      <aside className="hidden w-60 shrink-0 flex-col border-r border-[var(--color-hairline-dark)] bg-[var(--color-canvas)] lg:flex">
         <SidebarContent />
       </aside>
 
@@ -99,53 +92,51 @@ export default function Layout() {
       {mobileOpen && (
         <div className="fixed inset-0 z-50 lg:hidden">
           <div
-            className="absolute inset-0 bg-slate-900/60"
+            className="absolute inset-0 bg-black/70"
             onClick={() => setMobileOpen(false)}
           />
-          <aside className="absolute inset-y-0 left-0 flex w-72 flex-col bg-slate-900 shadow-2xl">
+          <aside className="absolute inset-y-0 left-0 flex w-72 flex-col bg-[var(--color-canvas)]">
             <SidebarContent onNavigate={() => setMobileOpen(false)} />
           </aside>
         </div>
       )}
 
-      <div className="flex min-w-0 flex-1 flex-col">
-        <header className="sticky top-0 z-30 flex h-14 items-center justify-between gap-3 border-b border-gray-200 bg-white px-4 shadow-sm sm:px-6">
+      <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
+        <header className="flex h-16 shrink-0 items-center justify-between gap-3 border-b border-[var(--color-hairline-dark)] bg-[var(--color-canvas)] px-4 sm:px-8">
           <div className="flex items-center gap-3">
             <button
               type="button"
               onClick={() => setMobileOpen(true)}
-              className="rounded-md p-2 text-gray-500 hover:bg-gray-100 lg:hidden"
+              className="rounded-full p-2 text-[var(--color-dim-on-dark)] hover:bg-white/5 hover:text-[var(--color-ink-on-dark)] lg:hidden"
               aria-label="Abrir menú"
             >
               <Menu className="h-5 w-5" />
             </button>
-            <div className="flex items-center gap-2 lg:hidden">
-              <Store className="h-5 w-5 text-blue-600" />
-              <span className="text-sm font-semibold text-gray-800">Golosinas del Remate</span>
-            </div>
-            <h1 className="hidden text-base font-semibold text-gray-900 lg:block">
+            <h1 className="font-[var(--font-display)] text-xl tracking-tight text-[var(--color-ink-on-dark)]">
               {pageTitle(location.pathname)}
             </h1>
           </div>
           <div className="flex items-center gap-3">
-            <span className="hidden text-sm text-gray-500 sm:block">{formatDate(todayISO())}</span>
-            <div className="flex items-center gap-2 rounded-md border border-gray-200 bg-gray-50 px-2.5 py-1.5">
-              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-blue-600 text-xs font-semibold text-white">
+            <span className="hidden text-sm text-[var(--color-dim-on-dark)] sm:block">
+              {formatDate(todayISO())}
+            </span>
+            <div className="flex items-center gap-2 rounded-full border border-[var(--color-hairline-dark)] bg-[var(--color-surface-deep)] px-3 py-1.5">
+              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[var(--color-primary)] text-xs font-semibold text-white">
                 A
               </span>
               <div className="hidden leading-tight sm:block">
-                <p className="text-xs font-medium text-gray-800">Administrador</p>
-                <p className="text-[11px] text-gray-500">admin@golosinasdelremate.com.ar</p>
+                <p className="text-xs font-medium text-[var(--color-ink-on-dark)]">Administrador</p>
+                <p className="text-[11px] text-[var(--color-dim-on-dark)]">admin@golosinasdelremate.com.ar</p>
               </div>
             </div>
           </div>
         </header>
 
-        <main className="mx-auto w-full max-w-[1400px] flex-1 px-4 py-6 sm:px-6">
+        <main className="flex-1 overflow-y-auto p-6 sm:p-8">
           <Outlet />
         </main>
 
-        <footer className="border-t border-gray-200 px-6 py-3 text-center text-xs text-gray-400">
+        <footer className="shrink-0 border-t border-[var(--color-hairline-dark)] px-6 py-3 text-center text-xs text-[var(--color-dim-on-dark)]">
           Golosinas del Remate · Sistema de gestión · Prototipo demostrativo
         </footer>
       </div>
@@ -156,21 +147,19 @@ export default function Layout() {
 function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
   const { state } = useApp()
   const location = useLocation()
+  const initials = state.settings.user.trim().charAt(0).toUpperCase() || 'A'
   return (
     <>
-      <div className="flex items-center gap-3 border-b border-slate-800 px-5 py-4">
-        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-blue-600 text-white">
-          <Store className="h-5 w-5" />
-        </div>
-        <div className="min-w-0">
-          <p className="truncate text-sm font-semibold text-white">Golosinas del Remate</p>
-          <p className="truncate text-xs text-slate-400">Gestión mayorista</p>
-        </div>
+      <div className="flex h-16 shrink-0 items-center gap-2.5 border-b border-[var(--color-hairline-dark)] px-6">
+        <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-[var(--color-primary)]" />
+        <span className="truncate font-[var(--font-display)] text-base font-semibold tracking-wide text-[var(--color-ink-on-dark)]">
+          Golosinas del <span className="text-[var(--color-primary)]">Remate</span>
+        </span>
         {onNavigate && (
           <button
             type="button"
             onClick={onNavigate}
-            className="ml-auto rounded-md p-1 text-slate-400 hover:text-white lg:hidden"
+            className="ml-auto rounded-full p-1 text-[var(--color-dim-on-dark)] hover:text-[var(--color-ink-on-dark)] lg:hidden"
             aria-label="Cerrar menú"
           >
             <X className="h-5 w-5" />
@@ -180,16 +169,16 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
 
       <NavList pathname={location.pathname} onNavigate={onNavigate} />
 
-      <div className="border-t border-slate-800 px-4 py-3">
-        <div className="flex items-center gap-3 rounded-md px-2 py-2">
-          <span className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-700 text-slate-200">
-            <User className="h-4 w-4" />
+      <div className="shrink-0 border-t border-[var(--color-hairline-dark)] px-4 py-3">
+        <div className="flex items-center gap-3 rounded-full px-2 py-1.5">
+          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[var(--color-primary)] text-xs font-semibold text-white">
+            {initials}
           </span>
           <span className="min-w-0">
-            <span className="block truncate text-sm font-medium text-white">
+            <span className="block truncate text-sm font-medium text-[var(--color-ink-on-dark)]">
               {state.settings.user}
             </span>
-            <span className="block truncate text-xs text-slate-400">
+            <span className="block truncate text-xs text-[var(--color-dim-on-dark)]">
               {state.settings.businessName}
             </span>
           </span>

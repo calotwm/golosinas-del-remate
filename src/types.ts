@@ -51,7 +51,7 @@ export interface Sale {
   id: string
   number: number
   date: string
-  clientId: string
+  clientId?: string | null
   items: SaleItem[]
   total: number
   paymentMethod: PaymentMethod

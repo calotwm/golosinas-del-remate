@@ -20,7 +20,7 @@ export default function ProviderDetail() {
   if (!provider) {
     return (
       <div className="flex flex-col gap-4">
-        <Link to="/proveedores" className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-800">
+        <Link to="/proveedores" className="inline-flex items-center gap-1 text-sm text-[var(--color-dim-on-dark)] hover:text-[var(--color-ink-on-dark)]">
           <ArrowLeft className="h-4 w-4" /> Volver a proveedores
         </Link>
         <EmptyState
@@ -41,19 +41,19 @@ export default function ProviderDetail() {
     <div className="flex flex-col gap-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-3">
-          <Link to="/proveedores" className="rounded-md p-2 text-gray-500 hover:bg-gray-200" aria-label="Volver">
+          <Link to="/proveedores" className="rounded-full p-2 text-[var(--color-dim-on-dark)] hover:bg-white/5 hover:text-[var(--color-ink-on-dark)]" aria-label="Volver">
             <ArrowLeft className="h-5 w-5" />
           </Link>
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-xl font-semibold text-gray-900">{provider.name}</h1>
+              <h1 className="text-xl font-medium tracking-tight text-[var(--color-ink-on-dark)]">{provider.name}</h1>
               {provider.status === 'Activo' ? (
                 <StatusBadge status="Activo" />
               ) : (
                 <StatusBadge status="Inactivo" />
               )}
             </div>
-            <p className="text-sm text-gray-500">CUIT {provider.cuit}</p>
+            <p className="text-sm text-[var(--color-dim-on-dark)]">CUIT {provider.cuit}</p>
           </div>
         </div>
         <Link to={`/precios?proveedor=${provider.id}`}>
@@ -76,7 +76,7 @@ export default function ProviderDetail() {
       <Card
         title="Productos del proveedor"
         actions={
-          <span className="inline-flex items-center gap-1.5 text-sm text-gray-500">
+          <span className="inline-flex items-center gap-1.5 text-sm text-[var(--color-dim-on-dark)]">
             <Package className="h-4 w-4" />
             {formatNumber(providerProducts.length)} productos
           </span>
@@ -99,15 +99,15 @@ export default function ProviderDetail() {
             </THead>
             <TBody>
               {providerProducts.map((p) => (
-                <tr key={p.id} className="transition-colors hover:bg-gray-50">
-                  <Td className="text-xs tabular-nums text-gray-500">{p.code}</Td>
-                  <Td className="font-medium text-gray-800">{p.name}</Td>
+                <tr key={p.id} className="transition-colors hover:bg-white/[0.03]">
+                  <Td className="text-xs tabular-nums text-[var(--color-dim-on-dark)]">{p.code}</Td>
+                  <Td className="font-medium text-[var(--color-ink-on-dark)]">{p.name}</Td>
                   <Td>{p.category}</Td>
                   <Td className="text-right tabular-nums">{formatARS(p.cost)}</Td>
-                  <Td className="text-right tabular-nums text-gray-500">
+                  <Td className="text-right tabular-nums text-[var(--color-dim-on-dark)]">
                     {p.margin.toLocaleString('es-AR', { maximumFractionDigits: 2 })}%
                   </Td>
-                  <Td className="text-right font-semibold tabular-nums text-gray-800">{formatARS(p.price)}</Td>
+                  <Td className="text-right font-semibold tabular-nums text-[var(--color-ink-on-dark)]">{formatARS(p.price)}</Td>
                 </tr>
               ))}
             </TBody>
@@ -120,9 +120,9 @@ export default function ProviderDetail() {
 
 function InfoTile({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-lg border border-gray-200 bg-white px-4 py-3 shadow-sm">
-      <p className="text-xs font-medium uppercase tracking-wide text-gray-500">{label}</p>
-      <p className="mt-1 truncate text-sm font-medium text-gray-800">{value}</p>
+    <div className="rounded-[20px] border border-[var(--color-hairline-dark)] bg-[var(--color-surface-elevated)] px-4 py-3">
+      <p className="text-xs font-medium uppercase tracking-wide text-[var(--color-dim-on-dark)]">{label}</p>
+      <p className="mt-1 truncate text-sm font-medium text-[var(--color-ink-on-dark)]">{value}</p>
     </div>
   )
 }

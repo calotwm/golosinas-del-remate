@@ -39,7 +39,7 @@ type Action =
   | { type: 'UPDATE_SETTINGS'; settings: Settings }
 
 export interface NewSaleInput {
-  clientId: string
+  clientId?: string | null
   items: { product: Product; quantity: number }[]
   paymentMethod: Sale['paymentMethod']
 }
@@ -164,7 +164,7 @@ function buildSale(input: NewSaleInput, number: number): Sale {
     id: `sal-${Date.now()}`,
     number,
     date: todayISO(),
-    clientId: input.clientId,
+    clientId: input.clientId ?? null,
     items,
     total: round2(items.reduce((acc, it) => acc + it.subtotal, 0)),
     paymentMethod: input.paymentMethod,

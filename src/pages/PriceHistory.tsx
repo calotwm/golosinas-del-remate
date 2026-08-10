@@ -7,7 +7,7 @@ import { formatARS, formatDate, formatNumber } from '../utils/format'
 
 export default function PriceHistory() {
   const { state } = useApp()
-  const { priceChanges, providers } = state
+  const { priceChanges, providers, products } = state
   const [selected, setSelected] = useState<PriceChange | null>(null)
 
   const providerOf = new Map(providers.map((p) => [p.id, p.name]))
@@ -49,12 +49,12 @@ export default function PriceHistory() {
                   key={change.id}
                   type="button"
                   onClick={() => setSelected(change)}
-                  className="group flex w-full flex-col gap-2 rounded-lg border border-gray-200 bg-white px-4 py-3 text-left shadow-sm transition-colors hover:border-blue-300 hover:bg-blue-50/40 sm:flex-row sm:items-center sm:justify-between"
+                  className="group flex w-full flex-col gap-2 rounded-[16px] border border-[var(--color-hairline-dark)] bg-[var(--color-surface-elevated)] px-4 py-3 text-left transition-colors hover:border-[rgba(255,255,255,0.25)] hover:bg-white/[0.03] sm:flex-row sm:items-center sm:justify-between"
                 >
                   <div className="flex items-center gap-3">
                     <span
-                      className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-md ${
-                        positive ? 'bg-red-50 text-red-600' : 'bg-green-50 text-green-600'
+                      className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full ${
+                        positive ? 'bg-white/5 text-[var(--color-danger)]' : 'bg-white/5 text-[var(--color-success)]'
                       }`}
                     >
                       {positive ? (
@@ -64,12 +64,15 @@ export default function PriceHistory() {
                       )}
                     </span>
                     <div>
-                      <p className="text-sm font-medium text-gray-800">
+                      <p className="text-sm font-medium text-[var(--color-ink-on-dark)]">
                         <span className="font-semibold">{formatDate(change.date)}</span> · Proveedor:{' '}
                         {change.providerId ? (providerOf.get(change.providerId) ?? '—') : 'Mixto'} ·
-                        Modificación: <span className={positive ? 'text-red-600' : 'text-green-600'}>{change.description}</span>
+                        Modificación:{' '}
+                        <span className={positive ? 'text-[var(--color-danger)]' : 'text-[var(--color-success)]'}>
+                          {change.description}
+                        </span>
                       </p>
-                      <p className="mt-0.5 text-xs text-gray-500">
+                      <p className="mt-0.5 text-xs text-[var(--color-dim-on-dark)]">
                         Productos afectados: {formatNumber(change.affectedCount)} · Usuario:{' '}
                         {change.user}
                       </p>
@@ -77,7 +80,7 @@ export default function PriceHistory() {
                   </div>
                   <span className="flex shrink-0 items-center gap-2 self-end sm:self-auto">
                     <Badge tone={tone(change)}>{positive ? `+${magnitude(change)}` : `-${magnitude(change)}`}</Badge>
-                    <ChevronRight className="h-4 w-4 text-gray-300 group-hover:text-blue-500" />
+                    <ChevronRight className="h-4 w-4 text-[var(--color-faint-on-dark)] group-hover:text-[var(--color-ink-on-dark)]" />
                   </span>
                 </button>
               )
@@ -99,7 +102,7 @@ export default function PriceHistory() {
         }
       >
         {selected && (
-          <div className="max-h-96 overflow-y-auto rounded-lg border border-gray-200">
+          <div className="max-h-96 overflow-y-auto rounded-[16px] border border-[var(--color-hairline-dark)]">
             <Table>
               <THead>
                 <Th>Código</Th>
@@ -112,18 +115,18 @@ export default function PriceHistory() {
                 {selected.details.map((d) => {
                   const variation = d.newPrice - d.oldPrice
                   return (
-                    <tr key={d.productId} className="hover:bg-gray-50">
-                      <Td className="text-xs tabular-nums text-gray-500">
-                        {state.products.find((p) => p.id === d.productId)?.code ?? '—'}
+                    <tr key={d.productId} className="hover:bg-white/[0.03]">
+                      <Td className="text-xs tabular-nums text-[var(--color-dim-on-dark)]">
+                        {products.find((p) => p.id === d.productId)?.code ?? '—'}
                       </Td>
-                      <Td className="font-medium text-gray-800">{d.productName}</Td>
-                      <Td className="text-right tabular-nums text-gray-500">{formatARS(d.oldPrice)}</Td>
-                      <Td className="text-right font-semibold tabular-nums text-gray-800">
+                      <Td className="font-medium text-[var(--color-ink-on-dark)]">{d.productName}</Td>
+                      <Td className="text-right tabular-nums text-[var(--color-dim-on-dark)]">{formatARS(d.oldPrice)}</Td>
+                      <Td className="text-right font-semibold tabular-nums text-[var(--color-ink-on-dark)]">
                         {formatARS(d.newPrice)}
                       </Td>
                       <Td
                         className={`text-right tabular-nums ${
-                          variation > 0 ? 'text-red-600' : variation < 0 ? 'text-green-600' : 'text-gray-500'
+                          variation > 0 ? 'text-[var(--color-danger)]' : variation < 0 ? 'text-[var(--color-success)]' : 'text-[var(--color-dim-on-dark)]'
                         }`}
                       >
                         {variation > 0 ? '+' : ''}

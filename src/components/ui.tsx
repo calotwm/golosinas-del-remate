@@ -6,7 +6,14 @@ import {
   useRef,
   useState,
 } from 'react'
-import type { ReactNode } from 'react'
+import type {
+  ButtonHTMLAttributes,
+  InputHTMLAttributes,
+  ReactNode,
+  Ref,
+  SelectHTMLAttributes,
+  TextareaHTMLAttributes,
+} from 'react'
 import { AlertTriangle, CheckCircle2, Info, Search, X, XCircle } from 'lucide-react'
 
 /* ---------------------------------- Button --------------------------------- */
@@ -16,12 +23,12 @@ type ButtonSize = 'sm' | 'md'
 
 const buttonVariants: Record<ButtonVariant, string> = {
   primary:
-    'bg-blue-600 text-white hover:bg-blue-700 focus-visible:ring-blue-500/40 shadow-sm',
+    'bg-[var(--color-primary)] text-[var(--color-ink-on-dark)] hover:brightness-110 active:scale-[0.98]',
   secondary:
-    'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 focus-visible:ring-gray-400/40 shadow-sm',
-  danger: 'bg-red-600 text-white hover:bg-red-700 focus-visible:ring-red-500/40 shadow-sm',
-  ghost: 'text-gray-600 hover:bg-gray-100 focus-visible:ring-gray-400/40',
-  'danger-ghost': 'text-red-600 hover:bg-red-50 focus-visible:ring-red-500/40',
+    'border border-[var(--color-hairline-dark)] bg-transparent text-[var(--color-ink-on-dark)] hover:border-[var(--color-hairline-strong)] hover:bg-white/5',
+  danger: 'bg-[var(--color-danger)] text-[var(--color-ink-on-dark)] hover:brightness-110 active:scale-[0.98]',
+  ghost: 'text-[var(--color-mute-on-dark)] hover:bg-white/5 hover:text-[var(--color-ink-on-dark)]',
+  'danger-ghost': 'text-[var(--color-danger)] hover:bg-white/5',
 }
 
 export function Button({
@@ -35,12 +42,12 @@ export function Button({
   size?: ButtonSize
   className?: string
   type?: 'button' | 'submit'
-} & React.ButtonHTMLAttributes<HTMLButtonElement>) {
+} & ButtonHTMLAttributes<HTMLButtonElement>) {
   const sizeCls = size === 'sm' ? 'h-8 px-2.5 text-sm gap-1.5' : 'h-9 px-4 text-sm gap-2'
   return (
     <button
       type={type}
-      className={`inline-flex items-center justify-center rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 disabled:cursor-not-allowed disabled:opacity-50 ${sizeCls} ${buttonVariants[variant]} ${className}`}
+      className={`inline-flex items-center justify-center rounded-full font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]/40 disabled:cursor-not-allowed disabled:opacity-50 ${sizeCls} ${buttonVariants[variant]} ${className}`}
       {...rest}
     />
   )
@@ -60,10 +67,12 @@ export function Card({
   children: ReactNode
 }) {
   return (
-    <section className={`rounded-lg border border-gray-200 bg-white shadow-sm ${className}`}>
+    <section className={`rounded-[20px] border border-[var(--color-hairline-dark)] bg-[var(--color-surface-elevated)] ${className}`}>
       {(title || actions) && (
-        <header className="flex items-center justify-between gap-3 border-b border-gray-200 px-5 py-3.5">
-          <h3 className="text-sm font-semibold text-gray-800">{title}</h3>
+        <header className="flex items-center justify-between gap-3 border-b border-[var(--color-hairline-dark)] px-5 py-3.5">
+          <h3 className="font-[var(--font-display)] text-sm font-semibold tracking-tight text-[var(--color-ink-on-dark)]">
+            {title}
+          </h3>
           {actions}
         </header>
       )}
@@ -110,21 +119,21 @@ export function Modal({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-gray-900/50 p-4 sm:py-10">
+    <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/70 p-4 sm:py-10">
       <div
-        className={`w-full ${sizes[size]} rounded-lg border border-gray-200 bg-white shadow-xl`}
+        className={`w-full ${sizes[size]} rounded-[20px] border border-[var(--color-hairline-dark)] bg-[var(--color-surface-elevated)]`}
         role="dialog"
         aria-modal="true"
       >
-        <header className="flex items-start justify-between gap-4 border-b border-gray-200 px-5 py-4">
+        <header className="flex items-start justify-between gap-4 border-b border-[var(--color-hairline-dark)] px-5 py-4">
           <div>
-            <h2 className="text-base font-semibold text-gray-900">{title}</h2>
-            {subtitle && <p className="mt-0.5 text-sm text-gray-500">{subtitle}</p>}
+            <h2 className="font-[var(--font-display)] text-lg tracking-tight text-[var(--color-ink-on-dark)]">{title}</h2>
+            {subtitle && <p className="mt-0.5 text-sm text-[var(--color-dim-on-dark)]">{subtitle}</p>}
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="rounded-md p-1 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600"
+            className="rounded-full p-1 text-[var(--color-dim-on-dark)] transition-colors hover:bg-white/5 hover:text-[var(--color-ink-on-dark)]"
             aria-label="Cerrar"
           >
             <X className="h-5 w-5" />
@@ -132,7 +141,7 @@ export function Modal({
         </header>
         <div className="max-h-[70vh] overflow-y-auto px-5 py-4">{children}</div>
         {footer && (
-          <footer className="flex items-center justify-end gap-2 border-t border-gray-200 bg-gray-50 px-5 py-3.5 rounded-b-lg">
+          <footer className="flex items-center justify-end gap-2 rounded-b-[20px] border-t border-[var(--color-hairline-dark)] bg-[var(--color-surface-deep)] px-5 py-3.5">
             {footer}
           </footer>
         )}
@@ -188,13 +197,13 @@ export function ConfirmDialog({
     >
       <div className="flex items-start gap-3">
         <div
-          className={`mt-0.5 rounded-full p-2 ${
-            tone === 'danger' ? 'bg-red-50 text-red-600' : 'bg-blue-50 text-blue-600'
+          className={`mt-0.5 rounded-full bg-white/5 p-2 ${
+            tone === 'danger' ? 'text-[var(--color-danger)]' : 'text-[var(--color-primary)]'
           }`}
         >
           <AlertTriangle className="h-5 w-5" />
         </div>
-        <div className="text-sm text-gray-600">{message}</div>
+        <div className="text-sm text-[var(--color-mute-on-dark)]">{message}</div>
       </div>
     </Modal>
   )
@@ -215,32 +224,32 @@ export function Field({
 }) {
   return (
     <label className="block">
-      <span className="mb-1.5 block text-sm font-medium text-gray-700">
+      <span className="mb-1.5 block text-sm font-medium text-[var(--color-mute-on-dark)]">
         {label}
-        {required && <span className="text-red-600"> *</span>}
+        {required && <span className="text-[var(--color-primary)]"> *</span>}
       </span>
       {children}
-      {hint && <span className="mt-1 block text-xs text-gray-500">{hint}</span>}
+      {hint && <span className="mt-1 block text-xs text-[var(--color-dim-on-dark)]">{hint}</span>}
     </label>
   )
 }
 
 const inputBase =
-  'w-full h-9 rounded-md border border-gray-300 bg-white px-3 text-sm text-gray-900 placeholder:text-gray-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 disabled:bg-gray-100 disabled:text-gray-500'
+  'w-full h-9 rounded-[12px] border border-[var(--color-hairline-dark)] bg-[var(--color-surface-deep)] px-3 text-sm text-[var(--color-ink-on-dark)] placeholder:text-[var(--color-dim-on-dark)] [color-scheme:dark] focus:border-[var(--color-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--color-primary)] disabled:opacity-60 disabled:cursor-not-allowed'
 
 export function Input({
   className = '',
   ref,
   ...rest
-}: React.InputHTMLAttributes<HTMLInputElement> & { ref?: React.Ref<HTMLInputElement> }) {
+}: InputHTMLAttributes<HTMLInputElement> & { ref?: Ref<HTMLInputElement> }) {
   return <input ref={ref} className={`${inputBase} ${className}`} {...rest} />
 }
 
-export function Select({ className = '', ...rest }: React.SelectHTMLAttributes<HTMLSelectElement>) {
+export function Select({ className = '', ...rest }: SelectHTMLAttributes<HTMLSelectElement>) {
   return <select className={`${inputBase} ${className}`} {...rest} />
 }
 
-export function Textarea({ className = '', ...rest }: React.TextareaHTMLAttributes<HTMLTextAreaElement>) {
+export function Textarea({ className = '', ...rest }: TextareaHTMLAttributes<HTMLTextAreaElement>) {
   return <textarea className={`${inputBase} h-auto py-2 ${className}`} {...rest} />
 }
 
@@ -255,7 +264,7 @@ export function SearchInput({
 }) {
   return (
     <div className="relative">
-      <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+      <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--color-dim-on-dark)]" />
       <input
         type="text"
         value={value}
@@ -267,7 +276,7 @@ export function SearchInput({
         <button
           type="button"
           onClick={() => onChange('')}
-          className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full p-0.5 text-gray-400 hover:text-gray-600"
+          className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full p-0.5 text-[var(--color-dim-on-dark)] hover:text-[var(--color-ink-on-dark)]"
           aria-label="Limpiar búsqueda"
         >
           <X className="h-4 w-4" />
@@ -280,12 +289,12 @@ export function SearchInput({
 /* ---------------------------------- Badge ---------------------------------- */
 
 const badgeStyles: Record<string, string> = {
-  green: 'bg-green-50 text-green-700 ring-green-600/20',
-  gray: 'bg-gray-100 text-gray-600 ring-gray-500/20',
-  red: 'bg-red-50 text-red-700 ring-red-600/20',
-  blue: 'bg-blue-50 text-blue-700 ring-blue-600/20',
-  amber: 'bg-amber-50 text-amber-700 ring-amber-600/20',
-  purple: 'bg-purple-50 text-purple-700 ring-purple-600/20',
+  green: 'border-[rgba(34,197,94,0.35)] text-[var(--color-success)]',
+  gray: 'border-[rgba(255,255,255,0.2)] text-[var(--color-mute-on-dark)]',
+  red: 'border-[rgba(239,68,68,0.35)] text-[var(--color-danger)]',
+  blue: 'border-[rgba(96,165,250,0.35)] text-[#60a5fa]',
+  amber: 'border-[rgba(234,179,8,0.35)] text-[var(--color-warning)]',
+  purple: 'border-[rgba(167,139,250,0.35)] text-[#a78bfa]',
 }
 
 export function Badge({
@@ -297,7 +306,7 @@ export function Badge({
 }) {
   return (
     <span
-      className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ring-1 ring-inset ${badgeStyles[tone]}`}
+      className={`inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-medium ${badgeStyles[tone]}`}
     >
       {children}
     </span>
@@ -305,14 +314,14 @@ export function Badge({
 }
 
 export function StatusBadge({ status }: { status: 'Activo' | 'Inactivo' }) {
-  return <Badge tone={status === 'Activo' ? 'green' : 'red'}>{status}</Badge>
+  return <Badge tone={status === 'Activo' ? 'green' : 'gray'}>{status}</Badge>
 }
 
 /* ---------------------------------- Table ---------------------------------- */
 
 export function Table({ children }: { children: ReactNode }) {
   return (
-    <div className="overflow-x-auto rounded-lg border border-gray-200">
+    <div className="overflow-x-auto rounded-[16px] border border-[var(--color-hairline-dark)]">
       <table className="w-full border-collapse text-sm">{children}</table>
     </div>
   )
@@ -321,7 +330,7 @@ export function Table({ children }: { children: ReactNode }) {
 export function THead({ children }: { children: ReactNode }) {
   return (
     <thead>
-      <tr className="sticky top-0 z-10 border-b border-gray-200 bg-gray-50 text-left text-xs uppercase tracking-wide text-gray-500">
+      <tr className="sticky top-0 z-10 border-b border-[var(--color-hairline-dark)] bg-[var(--color-surface-deep)] text-left text-xs uppercase tracking-wide text-[var(--color-dim-on-dark)]">
         {children}
       </tr>
     </thead>
@@ -333,11 +342,11 @@ export function Th({ children, className = '' }: { children?: ReactNode; classNa
 }
 
 export function Td({ children, className = '' }: { children?: ReactNode; className?: string }) {
-  return <td className={`border-b border-gray-100 px-4 py-2.5 align-middle ${className}`}>{children}</td>
+  return <td className={`border-b border-white/[0.06] px-4 py-2.5 align-middle text-[var(--color-mute-on-dark)] ${className}`}>{children}</td>
 }
 
 export function TBody({ children }: { children: ReactNode }) {
-  return <tbody className="divide-y divide-gray-100">{children}</tbody>
+  return <tbody className="divide-y divide-white/[0.06]">{children}</tbody>
 }
 
 /* -------------------------------- EmptyState ------------------------------- */
@@ -354,12 +363,12 @@ export function EmptyState({
   action?: ReactNode
 }) {
   return (
-    <div className="flex flex-col items-center justify-center rounded-lg border border-dashed border-gray-300 bg-gray-50/60 px-6 py-12 text-center">
-      <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-full bg-white text-gray-400 shadow-sm ring-1 ring-gray-200">
+    <div className="flex flex-col items-center justify-center rounded-[16px] border border-dashed border-[var(--color-hairline-dark)] bg-[var(--color-surface-deep)]/60 px-6 py-12 text-center">
+      <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-full bg-white/5 text-[var(--color-dim-on-dark)] ring-1 ring-[var(--color-hairline-dark)]">
         {icon ?? <Info className="h-5 w-5" />}
       </div>
-      <p className="text-sm font-semibold text-gray-700">{title}</p>
-      {description && <p className="mt-1 max-w-sm text-sm text-gray-500">{description}</p>}
+      <p className="text-sm font-semibold text-[var(--color-ink-on-dark)]">{title}</p>
+      {description && <p className="mt-1 max-w-sm text-sm text-[var(--color-dim-on-dark)]">{description}</p>}
       {action && <div className="mt-4">{action}</div>}
     </div>
   )
@@ -379,20 +388,91 @@ export function StatCard({
   sub?: ReactNode
 }) {
   return (
-    <div className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
+    <div className="rounded-[20px] border border-[var(--color-hairline-dark)] bg-[var(--color-surface-elevated)] p-4">
       <div className="flex items-start justify-between gap-2">
         <div className="min-w-0">
-          <p className="truncate text-xs font-medium uppercase tracking-wide text-gray-500">{label}</p>
-          <p className="mt-1.5 truncate text-2xl font-semibold text-gray-900">{value}</p>
-          {sub && <div className="mt-1 text-xs text-gray-500">{sub}</div>}
+          <p className="truncate text-xs font-medium uppercase tracking-wide text-[var(--color-dim-on-dark)]">{label}</p>
+          <p className="mt-1.5 truncate font-[var(--font-display)] text-2xl font-medium tracking-tight text-[var(--color-ink-on-dark)]">{value}</p>
+          {sub && <div className="mt-1 text-xs text-[var(--color-dim-on-dark)]">{sub}</div>}
         </div>
         {icon && (
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-blue-50 text-blue-600">
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[var(--color-primary)]/10 text-[var(--color-primary)]">
             {icon}
           </div>
         )}
       </div>
     </div>
+  )
+}
+
+/* ---------------------------------- KpiCard -------------------------------- */
+
+export function KpiCard({
+  label,
+  value,
+  subtitle,
+  trend,
+  variant = 'default',
+}: {
+  label: string
+  value: string
+  subtitle?: string
+  trend?: string
+  variant?: 'default' | 'glass'
+}) {
+  const isGlass = variant === 'glass'
+  const baseClass = isGlass
+    ? 'glass-card p-8'
+    : 'group relative overflow-hidden rounded-[20px] border border-[var(--color-hairline-dark)] bg-[var(--color-surface-elevated)] p-8 transition-all duration-200 hover:-translate-y-0.5 hover:border-[rgba(255,255,255,0.25)]'
+
+  return (
+    <div className={baseClass}>
+      {!isGlass && (
+        <div
+          className="pointer-events-none absolute inset-0"
+          style={{ background: 'var(--gradient-surface)' }}
+        />
+      )}
+      <div className="absolute left-0 top-0 h-[3px] w-full bg-[var(--color-primary)]" />
+      <p className="relative text-sm font-medium text-[var(--color-mute-on-dark)]">
+        {label}
+      </p>
+      <p className="relative mt-3 font-[var(--font-display)] text-2xl font-medium tracking-tight text-[var(--color-ink-on-dark)]">
+        {value}
+      </p>
+      {subtitle && (
+        <p className="relative mt-1.5 text-xs text-[var(--color-dim-on-dark)]">
+          {subtitle}
+        </p>
+      )}
+      {trend && (
+        <p className="relative mt-1.5 text-xs font-medium text-[var(--color-success)]">
+          {trend}
+        </p>
+      )}
+    </div>
+  )
+}
+
+/* ------------------------------- GrainOverlay ------------------------------ */
+
+// Film grain overlay — sits ABOVE all content (z-[100]), pointer-events-none,
+// screen blend so it's visible on dark backgrounds.
+const GRAIN_URI = `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0.5  0 0 0 0 0.5  0 0 0 0 0.5  0 0 0 0.6 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`
+
+export function GrainOverlay() {
+  return (
+    <div
+      aria-hidden="true"
+      className="pointer-events-none fixed inset-0 z-[100]"
+      style={{
+        backgroundImage: GRAIN_URI,
+        backgroundRepeat: 'repeat',
+        backgroundSize: '256px 256px',
+        opacity: 0.15,
+        mixBlendMode: 'screen',
+      }}
+    />
   )
 }
 
@@ -422,9 +502,9 @@ export function ToastProvider({ children }: { children: ReactNode }) {
   }, [])
 
   const icons: Record<ToastType, ReactNode> = {
-    success: <CheckCircle2 className="h-5 w-5 text-green-500" />,
-    error: <XCircle className="h-5 w-5 text-red-500" />,
-    info: <Info className="h-5 w-5 text-blue-500" />,
+    success: <CheckCircle2 className="h-5 w-5 text-[var(--color-success)]" />,
+    error: <XCircle className="h-5 w-5 text-[var(--color-danger)]" />,
+    info: <Info className="h-5 w-5 text-[var(--color-primary)]" />,
   }
 
   return (
@@ -434,10 +514,10 @@ export function ToastProvider({ children }: { children: ReactNode }) {
         {toasts.map((t) => (
           <div
             key={t.id}
-            className="pointer-events-auto flex items-start gap-3 rounded-md border border-gray-200 bg-white px-4 py-3 shadow-lg"
+            className="pointer-events-auto flex items-start gap-3 rounded-[12px] border border-[var(--color-hairline-dark)] bg-[var(--color-surface-elevated)] px-4 py-3"
           >
             <span className="mt-0.5 shrink-0">{icons[t.type]}</span>
-            <p className="text-sm text-gray-800">{t.message}</p>
+            <p className="text-sm text-[var(--color-ink-on-dark)]">{t.message}</p>
           </div>
         ))}
       </div>
