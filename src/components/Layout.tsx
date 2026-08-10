@@ -1,19 +1,14 @@
 import { useEffect, useState } from 'react'
-import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
+import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import {
   BarChart3,
   Factory,
-  History,
   LayoutDashboard,
   Menu,
-  Package,
   Percent,
-  PlusCircle,
-  Settings,
   ShoppingCart,
   Store,
   User,
-  Users,
   X,
 } from 'lucide-react'
 import { useApp } from '../context/AppContext'
@@ -27,34 +22,21 @@ interface NavItem {
 }
 
 const mainNav: NavItem[] = [
-  { label: 'Dashboard', path: '/', icon: LayoutDashboard, exact: true },
+  { label: 'Menu principal', path: '/', icon: LayoutDashboard, exact: true },
   { label: 'Ventas', path: '/ventas', icon: ShoppingCart },
-  { label: 'Productos', path: '/productos', icon: Package },
-  { label: 'Proveedores', path: '/proveedores', icon: Factory },
-  { label: 'Clientes', path: '/clientes', icon: Users },
   { label: 'Actualización de precios', path: '/precios', icon: Percent },
+  { label: 'Proveedores', path: '/proveedores', icon: Factory },
   { label: 'Reportes', path: '/reportes', icon: BarChart3 },
-  { label: 'Configuración', path: '/configuracion', icon: Settings },
-]
-
-const quickNav: NavItem[] = [
-  { label: 'Nueva venta', path: '/ventas/nueva', icon: PlusCircle },
-  { label: 'Historial de precios', path: '/precios/historial', icon: History },
 ]
 
 const titles: Array<[RegExp, string]> = [
-  [/^\/$/, 'Dashboard'],
   [/^\/ventas\/nueva/, 'Nueva venta'],
   [/^\/ventas/, 'Ventas'],
-  [/^\/productos/, 'Productos'],
   [/^\/proveedores\//, 'Detalle del proveedor'],
   [/^\/proveedores/, 'Proveedores'],
-  [/^\/clientes\//, 'Detalle del cliente'],
-  [/^\/clientes/, 'Clientes'],
-  [/^\/precios\/historial/, 'Historial de precios'],
   [/^\/precios/, 'Actualización de precios'],
   [/^\/reportes/, 'Reportes'],
-  [/^\/configuracion/, 'Configuración'],
+  [/^\/$/, 'Menu principal'],
 ]
 
 function pageTitle(pathname: string): string {
@@ -82,27 +64,6 @@ function NavList({ pathname, onNavigate }: { pathname: string; onNavigate?: () =
             key={item.path}
             to={item.path}
             end={item.exact}
-            onClick={onNavigate}
-            className={`flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors ${
-              active
-                ? 'bg-blue-600 font-medium text-white'
-                : 'text-slate-300 hover:bg-slate-800 hover:text-white'
-            }`}
-          >
-            <item.icon className="h-[18px] w-[18px] shrink-0" />
-            <span className="truncate">{item.label}</span>
-          </NavLink>
-        )
-      })}
-      <p className="px-3 pb-2 pt-5 text-[11px] font-semibold uppercase tracking-wider text-slate-500">
-        Accesos rápidos
-      </p>
-      {quickNav.map((item) => {
-        const active = isActive(item, pathname)
-        return (
-          <NavLink
-            key={item.path}
-            to={item.path}
             onClick={onNavigate}
             className={`flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors ${
               active
@@ -220,7 +181,7 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
       <NavList pathname={location.pathname} onNavigate={onNavigate} />
 
       <div className="border-t border-slate-800 px-4 py-3">
-        <Link to="/configuracion" className="flex items-center gap-3 rounded-md px-2 py-2 hover:bg-slate-800">
+        <div className="flex items-center gap-3 rounded-md px-2 py-2">
           <span className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-700 text-slate-200">
             <User className="h-4 w-4" />
           </span>
@@ -232,7 +193,7 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
               {state.settings.businessName}
             </span>
           </span>
-        </Link>
+        </div>
       </div>
     </>
   )

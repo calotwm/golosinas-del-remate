@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
 import { ArrowDownRight, ArrowUpRight, ChevronRight, History } from 'lucide-react'
 import type { PriceChange } from '../types'
 import { useApp } from '../context/AppContext'
@@ -31,14 +30,7 @@ export default function PriceHistory() {
 
   return (
     <div className="flex flex-col gap-6">
-      <Card
-        title="Historial de precios"
-        actions={
-          <Link to="/precios">
-            <Button variant="secondary">Actualizar precios</Button>
-          </Link>
-        }
-      >
+      <Card title="Historial de precios">
         {sorted.length === 0 ? (
           <EmptyState
             icon={<History className="h-5 w-5" />}

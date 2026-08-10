@@ -1,6 +1,6 @@
 # Golosinas del Remate — Sistema de Gestión Mayorista
 
-Prototipo visual de un sistema web de gestión para un mayorista de golosinas. Interfaz profesional de escritorio, con datos ficticios realistas y navegación e interacciones simuladas entre pantallas, pensada para demostrarle al cliente cómo sería el sistema terminado.
+Prototipo visual de un sistema web de gestión para un mayorista de golosinas. Interfaz profesional y simple, con datos ficticios realistas y navegación e interacciones simuladas, pensada para demostrarle al cliente cómo sería el sistema terminado.
 
 ## Demo
 
@@ -11,15 +11,11 @@ Prototipo visual de un sistema web de gestión para un mayorista de golosinas. I
 
 | Módulo | Descripción |
 |---|---|
-| Dashboard | Indicadores del día/semana/mes, gráficos de ventas y últimas ventas |
+| Menu principal | Pantalla de inicio simple con acceso rápido a los módulos |
 | Ventas | Registro de nueva venta (búsqueda por nombre o código de barras, snapshot de precios) e historial con filtros |
-| Productos | Catálogo con búsqueda, filtros por proveedor/marca/categoría, alta, edición, detalle y desactivación |
-| Proveedores | Administración de proveedores y detalle con sus productos |
-| Clientes | Administración de clientes e historial de compras |
-| Actualización de precios | Aumentos/reducciones masivas por proveedor o por selección, con vista previa y confirmación |
-| Historial de precios | Registro de modificaciones con detalle de precios anterior/nuevo por producto |
-| Reportes | Ventas diarias/semanales/mensuales, por cliente/producto/proveedor, más vendidos y facturación por período |
-| Configuración | Datos del negocio y preferencias |
+| Actualización de precios | Aumentos/reducciones masivas por proveedor o por selección, con vista previa y confirmación. Incluye pestaña de historial de cambios |
+| Proveedores | Administración de proveedores y detalle con sus productos (costo, margen, precio de venta) |
+| Reportes | Ventas por período (tabla + gráfico) y productos más vendidos |
 
 ## Regla de precios
 

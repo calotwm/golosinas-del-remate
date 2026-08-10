@@ -1,8 +1,9 @@
 import { useEffect, useMemo, useState } from 'react'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useSearchParams } from 'react-router-dom'
 import { ArrowDown, ArrowUp, Percent, Search } from 'lucide-react'
 import type { PriceChangeType } from '../types'
 import { useApp } from '../context/AppContext'
+import PriceHistory from './PriceHistory'
 import {
   Button,
   Card,
@@ -24,9 +25,9 @@ export default function PriceUpdate() {
   const { state, applyPriceChange } = useApp()
   const { products, providers, priceChanges } = state
   const toast = useToast()
-  const navigate = useNavigate()
   const [params] = useSearchParams()
 
+  const [tab, setTab] = useState<'update' | 'history'>('update')
   const [providerId, setProviderId] = useState('')
   const [changeType, setChangeType] = useState<PriceChangeType>('Porcentaje')
   const [value, setValue] = useState('')
@@ -136,7 +137,7 @@ export default function PriceUpdate() {
         affectedIds.length === 1 ? '' : 's'
       } modificado${affectedIds.length === 1 ? '' : 's'}`,
     )
-    navigate('/precios/historial')
+    setTab('history')
   }
 
   const reset = () => {
@@ -152,6 +153,29 @@ export default function PriceUpdate() {
 
   return (
     <div className="mx-auto flex max-w-6xl flex-col gap-6">
+      <div className="flex w-fit rounded-md border border-gray-300 p-0.5">
+        <button
+          type="button"
+          onClick={() => setTab('update')}
+          className={`rounded px-3 py-1.5 text-sm font-medium transition-colors ${
+            tab === 'update' ? 'bg-blue-600 text-white' : 'text-gray-600 hover:text-gray-900'
+          }`}
+        >
+          Actualizar precios
+        </button>
+        <button
+          type="button"
+          onClick={() => setTab('history')}
+          className={`rounded px-3 py-1.5 text-sm font-medium transition-colors ${
+            tab === 'history' ? 'bg-blue-600 text-white' : 'text-gray-600 hover:text-gray-900'
+          }`}
+        >
+          Historial de cambios
+        </button>
+      </div>
+
+      {tab === 'update' ? (
+        <>
       <Card title="Actualización de precios">
         <p className="mb-4 text-sm text-gray-500">
           Modifique los precios de venta de un proveedor mediante un porcentaje o un monto fijo. La
@@ -389,7 +413,11 @@ export default function PriceUpdate() {
             <strong>{magnitude}</strong>. La operación quedará registrada en el historial de precios.
           </>
         }
-      />
+        />
+        </>
+      ) : (
+        <PriceHistory />
+      )}
     </div>
   )
 }
