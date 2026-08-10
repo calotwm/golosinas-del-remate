@@ -12,7 +12,7 @@ Prototipo visual de un sistema web de gestión para un mayorista de golosinas, c
 | Módulo | Descripción |
 |---|---|
 | Menu principal | Pantalla de inicio simple con acceso rápido a los módulos |
-| Ventas | Registro de nueva venta (búsqueda de producto por nombre o código de barras, solo producto y monto, sin cliente) e historial con filtros |
+| Ventas | Registro de nueva venta (búsqueda de producto por nombre o código de barras, solo producto y monto, sin cliente), historial con filtros e **impresión de factura PDF** (productos, precios, monto y forma de pago) |
 | Actualización de precios | Aumentos/reducciones masivas por proveedor o por selección, con vista previa y confirmación. Incluye pestaña de historial de cambios |
 | Proveedores | Administración de proveedores y detalle con sus productos (costo, margen, precio de venta) |
 | Reportes | Ventas por período (tabla + gráfico) y productos más vendidos |
@@ -20,6 +20,10 @@ Prototipo visual de un sistema web de gestión para un mayorista de golosinas, c
 ## Regla de precios
 
 Cada venta guarda el **precio unitario utilizado al momento de la venta** (snapshot). Los aumentos de precios posteriores solo afectan ventas futuras, nunca las ya registradas.
+
+## Factura PDF
+
+Al registrar una venta (y desde el historial), se puede generar un **PDF tipo factura**: banda roja con razón social y datos del negocio, número de venta, fecha, forma de pago, detalle de productos con cantidades, precios unitarios y subtotales, y fila TOTAL.
 
 ## Diseño (template UrquiSoft)
 

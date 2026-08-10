@@ -1,11 +1,12 @@
 import { useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { PackageSearch, ShoppingCart, Trash2 } from 'lucide-react'
-import type { PaymentMethod, Product } from '../types'
+import { CheckCircle2, PackageSearch, Printer, ShoppingCart, Trash2 } from 'lucide-react'
+import type { PaymentMethod, Product, Sale } from '../types'
 import { useApp } from '../context/AppContext'
 import { Button, Card, EmptyState, Field, Input, Select } from '../components/ui'
 import { useToast } from '../components/ui'
 import { formatARS, formatDate, round2, todayISO } from '../utils/format'
+import { generateSaleInvoicePdf } from '../utils/invoice'
 
 export default function NewSale() {
   const { state, addSale } = useApp()
@@ -18,6 +19,7 @@ export default function NewSale() {
   const [items, setItems] = useState<{ product: Product; quantity: number }[]>([])
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('Efectivo')
   const [error, setError] = useState<string | null>(null)
+  const [lastSale, setLastSale] = useState<Sale | null>(null)
 
   const productInputRef = useRef<HTMLInputElement>(null)
 
@@ -71,12 +73,75 @@ export default function NewSale() {
       setError('Agregue al menos un producto a la venta.')
       return
     }
-    addSale({
-      items,
-      paymentMethod,
-    })
+    const sale = addSale({ items, paymentMethod })
+    setLastSale(sale)
     toast.success('Venta registrada correctamente')
-    navigate('/ventas')
+  }
+
+  const resetForm = () => {
+    setItems([])
+    setProductQuery('')
+    setShowProductDropdown(false)
+    setPaymentMethod('Efectivo')
+    setError(null)
+    setLastSale(null)
+  }
+
+  if (lastSale) {
+    const summary: { label: string; value: string }[] = [
+      { label: 'N° de venta', value: `#${lastSale.number}` },
+      { label: 'Fecha', value: formatDate(lastSale.date) },
+      { label: 'Total', value: formatARS(lastSale.total) },
+      { label: 'Forma de pago', value: lastSale.paymentMethod },
+      { label: 'Cantidad de productos', value: String(lastSale.items.length) },
+    ]
+
+    return (
+      <div className="mx-auto flex max-w-3xl flex-col gap-6">
+        <Card title="Venta registrada">
+          <div className="flex flex-col gap-5">
+            <div className="flex items-center gap-2 text-[var(--color-success)]">
+              <CheckCircle2 className="h-5 w-5" />
+              <span className="text-sm font-medium">La venta se registró correctamente.</span>
+            </div>
+
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              {summary.map((item) => (
+                <div
+                  key={item.label}
+                  className="rounded-[16px] border border-[var(--color-hairline-dark)] bg-[var(--color-surface-deep)] px-4 py-3"
+                >
+                  <p className="text-xs font-medium uppercase tracking-wide text-[var(--color-dim-on-dark)]">
+                    {item.label}
+                  </p>
+                  <p className="mt-1 font-[var(--font-display)] text-xl font-medium tabular-nums text-[var(--color-ink-on-dark)]">
+                    {item.value}
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            <div className="flex flex-wrap items-center justify-between gap-3 border-t border-[var(--color-hairline-dark)] pt-4">
+              <p className="text-xs text-[var(--color-dim-on-dark)]">
+                ¿Quiere imprimir la factura de esta venta?
+              </p>
+              <div className="flex flex-wrap gap-2">
+                <Button onClick={() => generateSaleInvoicePdf(lastSale, state.settings)}>
+                  <Printer className="h-4 w-4" />
+                  Imprimir PDF
+                </Button>
+                <Button variant="secondary" onClick={resetForm}>
+                  Nueva venta
+                </Button>
+                <Button variant="ghost" onClick={() => navigate('/ventas')}>
+                  Ver historial
+                </Button>
+              </div>
+            </div>
+          </div>
+        </Card>
+      </div>
+    )
   }
 
   return (

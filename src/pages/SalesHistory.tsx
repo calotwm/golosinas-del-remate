@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Receipt, Undo2, XCircle } from 'lucide-react'
+import { Printer, Receipt, Undo2, XCircle } from 'lucide-react'
 import type { PaymentMethod, Sale } from '../types'
 import { useApp } from '../context/AppContext'
 import {
@@ -20,10 +20,11 @@ import {
   useToast,
 } from '../components/ui'
 import { formatARS, formatDate, formatNumber, round2 } from '../utils/format'
+import { generateSaleInvoicePdf } from '../utils/invoice'
 
 export default function SalesHistory() {
-  const { setSaleStatus } = useApp()
-  const { sales } = useApp().state
+  const { state, setSaleStatus } = useApp()
+  const { sales, settings } = state
   const toast = useToast()
 
   const [from, setFrom] = useState('')
@@ -91,6 +92,7 @@ export default function SalesHistory() {
               <Th className="text-right">Total</Th>
               <Th>Forma de pago</Th>
               <Th>Estado</Th>
+              <Th className="text-right"></Th>
             </THead>
             <TBody>
               {filtered.map((s) => (
@@ -110,6 +112,19 @@ export default function SalesHistory() {
                     ) : (
                       <Badge tone="amber">Anulada</Badge>
                     )}
+                  </Td>
+                  <Td className="text-right">
+                    <button
+                      type="button"
+                      aria-label="Imprimir factura"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        generateSaleInvoicePdf(s, settings)
+                      }}
+                      className="rounded-md p-1.5 text-[var(--color-dim-on-dark)] transition-colors hover:bg-white/5 hover:text-[var(--color-primary)]"
+                    >
+                      <Printer className="h-4 w-4" />
+                    </button>
                   </Td>
                 </tr>
               ))}
@@ -146,6 +161,9 @@ export default function SalesHistory() {
                     <Undo2 className="h-4 w-4" /> Reactivar venta
                   </>
                 )}
+              </Button>
+              <Button onClick={() => generateSaleInvoicePdf(selected, settings)}>
+                <Printer className="h-4 w-4" /> Imprimir PDF
               </Button>
               <Button variant="secondary" onClick={() => setSelected(null)}>
                 Cerrar
