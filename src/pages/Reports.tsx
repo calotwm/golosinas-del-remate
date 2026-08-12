@@ -12,17 +12,17 @@ const TABS: Array<{ key: ReportTab; label: string }> = [
   { key: 'top-productos', label: 'Productos más vendidos' },
 ]
 
-const GRID = '#26262a'
-const AXIS_TICK = { fontSize: 12, fill: 'rgba(255,255,255,0.45)' }
-const AXIS_TICK_SM = { fontSize: 11, fill: 'rgba(255,255,255,0.45)' }
+const GRID = '#d9ccc4'
+const AXIS_TICK = { fontSize: 12, fill: 'rgba(42,21,18,0.68)' }
+const AXIS_TICK_SM = { fontSize: 11, fill: 'rgba(42,21,18,0.68)' }
 const TOOLTIP_STYLE = {
-  backgroundColor: '#16181a',
-  border: '1px solid rgba(255,255,255,0.12)',
+  backgroundColor: '#fffdf8',
+  border: '1px solid rgba(42,21,18,0.12)',
   borderRadius: 12,
-  color: '#fff',
+  color: '#2a1512',
   fontSize: 13,
 }
-const TOOLTIP_CURSOR = { fill: 'rgba(255,255,255,0.06)' }
+const TOOLTIP_CURSOR = { fill: 'rgba(197,61,36,0.06)' }
 
 export default function Reports() {
   const { state } = useApp()
@@ -67,8 +67,8 @@ export default function Reports() {
                 onClick={() => setTab(t.key)}
                 className={`rounded-full px-3 py-1.5 text-sm font-medium transition-colors ${
                   tab === t.key
-                    ? 'bg-[var(--color-primary)] text-[var(--color-ink-on-dark)]'
-                    : 'text-[var(--color-mute-on-dark)] hover:text-[var(--color-ink-on-dark)]'
+                    ? 'bg-[var(--color-primary)] text-white'
+                    : 'text-[var(--color-ink-muted)] hover:text-[var(--color-ink)]'
                 }`}
               >
                 {t.label}
@@ -89,13 +89,13 @@ export default function Reports() {
       {tab === 'ventas' ? (
         <>
           <div className="flex flex-wrap gap-3 text-sm">
-            <span className="rounded-[20px] border border-[var(--color-hairline-dark)] bg-[var(--color-surface-elevated)] px-4 py-3">
+            <span className="rounded-[20px] border border-[var(--color-hairline-dark)] bg-[var(--color-surface-elevated)] px-4 py-3 shadow-[0_2px_8px_-1px_rgba(42,21,18,0.06)]">
               Ventas en el período:{' '}
-              <span className="font-[var(--font-display)] font-medium tabular-nums text-[var(--color-ink-on-dark)]">{formatNumber(inRange.length)}</span>
+              <span className="font-[var(--font-display)] font-normal tabular-nums text-[var(--color-ink)]">{formatNumber(inRange.length)}</span>
             </span>
-            <span className="rounded-[20px] border border-[var(--color-hairline-dark)] bg-[var(--color-surface-elevated)] px-4 py-3">
+            <span className="rounded-[20px] border border-[var(--color-hairline-dark)] bg-[var(--color-surface-elevated)] px-4 py-3 shadow-[0_2px_8px_-1px_rgba(42,21,18,0.06)]">
               Facturación:{' '}
-              <span className="font-[var(--font-display)] font-medium tabular-nums text-[var(--color-ink-on-dark)]">{formatARS(sumTotals(inRange))}</span>
+              <span className="font-[var(--font-display)] font-normal tabular-nums text-[var(--color-ink)]">{formatARS(sumTotals(inRange))}</span>
             </span>
           </div>
 
@@ -117,7 +117,7 @@ export default function Reports() {
                       contentStyle={TOOLTIP_STYLE}
                       cursor={TOOLTIP_CURSOR}
                     />
-                    <Bar dataKey="total" name="Facturación" fill="#dc2626" radius={[4, 4, 0, 0]} barSize={28} />
+                    <Bar dataKey="total" name="Facturación" fill="#c53d24" radius={[4, 4, 0, 0]} barSize={28} />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
@@ -143,13 +143,13 @@ export default function Reports() {
                   {[...inRange]
                     .sort((a, b) => (a.date === b.date ? b.number - a.number : a.date < b.date ? 1 : -1))
                     .map((s) => (
-                      <tr key={s.id} className="hover:bg-white/[0.03]">
-                        <Td className="font-medium text-[var(--color-ink-on-dark)]">#{s.number}</Td>
+                      <tr key={s.id} className="hover:bg-[var(--color-row-tint)]">
+                        <Td className="font-medium text-[var(--color-ink)]">#{s.number}</Td>
                         <Td>{formatDate(s.date)}</Td>
                         <Td className="text-right tabular-nums">
                           {formatNumber(s.items.reduce((acc, it) => acc + it.quantity, 0))}
                         </Td>
-                        <Td className="text-right font-medium tabular-nums text-[var(--color-ink-on-dark)]">{formatARS(s.total)}</Td>
+                        <Td className="text-right font-medium tabular-nums text-[var(--color-ink)]">{formatARS(s.total)}</Td>
                         <Td>{s.paymentMethod}</Td>
                       </tr>
                     ))}
@@ -189,7 +189,7 @@ export default function Reports() {
                       contentStyle={TOOLTIP_STYLE}
                       cursor={TOOLTIP_CURSOR}
                     />
-                    <Bar dataKey="Cantidad" fill="#dc2626" radius={[0, 4, 4, 0]} barSize={14} />
+                    <Bar dataKey="Cantidad" fill="#c53d24" radius={[0, 4, 4, 0]} barSize={14} />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
@@ -203,11 +203,11 @@ export default function Reports() {
                 </THead>
                 <TBody>
                   {topProducts.map((p) => (
-                    <tr key={p.key} className="hover:bg-white/[0.03]">
-                      <Td className="font-medium text-[var(--color-ink-on-dark)]">{p.label}</Td>
+                    <tr key={p.key} className="hover:bg-[var(--color-row-tint)]">
+                      <Td className="font-medium text-[var(--color-ink)]">{p.label}</Td>
                       <Td>{providerName.get(providerOf.get(p.key) ?? '') ?? 'Sin proveedor'}</Td>
                       <Td className="text-right tabular-nums">{formatNumber(p.qty)}</Td>
-                      <Td className="text-right font-medium tabular-nums text-[var(--color-ink-on-dark)]">{formatARS(p.total)}</Td>
+                      <Td className="text-right font-medium tabular-nums text-[var(--color-ink)]">{formatARS(p.total)}</Td>
                     </tr>
                   ))}
                 </TBody>

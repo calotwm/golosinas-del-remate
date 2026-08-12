@@ -1,0 +1,115 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-12T00:00:00.000Z",
+  "title": "Design System: Golosinas del Remate",
+  "extensions": {
+    "colorMeta": {
+      "primary": { "role": "primary", "displayName": "Terracota", "canonical": "#c53d24", "tonalRamp": ["#3d100a", "#7a1414", "#a01e1c", "#c53d24", "#d95a35", "#e77a50", "#f3a683", "#f7fbf3"] },
+      "primary-deep": { "role": "primary", "displayName": "Borgoña Profundo", "canonical": "#a01e1c", "tonalRamp": ["#2b0505", "#5c0c0b", "#7a1414", "#a01e1c", "#b53a2e", "#c95a45", "#e08a70", "#f7fbf3"] },
+      "accent": { "role": "accent", "displayName": "Naranja Remate", "canonical": "#fc893d", "tonalRamp": ["#4a1f00", "#7a3a00", "#b2550f", "#d96b1c", "#fc893d", "#fda75f", "#fec492", "#fff5ea"] },
+      "accent-deep": { "role": "accent", "displayName": "Naranja Tinta", "canonical": "#b2550f", "tonalRamp": ["#3d1600", "#5c2400", "#7a3300", "#9c4408", "#b2550f", "#c96a2a", "#e09555", "#fff5ea"] },
+      "canvas": { "role": "neutral", "displayName": "Crema", "canonical": "#f7fbf3", "tonalRamp": ["#2a1512", "#5a3d35", "#8a6a60", "#b8a89e", "#d9ccc4", "#e9d4d1", "#f0e4df", "#f7fbf3"] },
+      "surface-deep": { "role": "neutral", "displayName": "Rosa Pálido", "canonical": "#e9d4d1", "tonalRamp": ["#2a1512", "#6b4a44", "#9c7a72", "#c4a39c", "#d9bab5", "#e9d4d1", "#f2e4e0", "#fbf6f4"] },
+      "surface-elevated": { "role": "neutral", "displayName": "Blanco Cremoso", "canonical": "#fffdf8", "tonalRamp": ["#2a1512", "#5a453c", "#8f7868", "#c2b3a6", "#e5dccf", "#f3ede3", "#faf6ee", "#fffdf8"] },
+      "ink": { "role": "neutral", "displayName": "Tinta Borgoña", "canonical": "#2a1512", "tonalRamp": ["#120605", "#2a1512", "#4a2b25", "#6b4a44", "#8f6d65", "#b89a92", "#e0cbc4", "#f7fbf3"] },
+      "success": { "role": "semantic", "displayName": "Verde Éxito", "canonical": "#257a37", "tonalRamp": ["#0a2e12", "#145020", "#1d6a2c", "#257a37", "#33954a", "#55b36b", "#8fd4a0", "#eaf7ee"] },
+      "warning": { "role": "semantic", "displayName": "Ámbar Alerta", "canonical": "#b45309", "tonalRamp": ["#3a1a00", "#5c2c00", "#8a4400", "#a54f06", "#b45309", "#cc6a1f", "#e09352", "#fdf1e3"] },
+      "danger": { "role": "semantic", "displayName": "Borgoña Peligro", "canonical": "#a01e1c", "tonalRamp": ["#2b0505", "#5c0c0b", "#7a1414", "#a01e1c", "#b53a2e", "#c95a45", "#e08a70", "#fdf0ed"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Anton Display", "purpose": "Brand lockup, page titles, KPI values — the remate marker voice. Never body copy." },
+      "body": { "displayName": "Inter Body", "purpose": "All operating content: tables, forms, labels, copy." }
+    },
+    "shadows": [
+      { "name": "paper-card", "value": "inset 0 1px 0 0 rgba(255,253,248,0.9), 0 4px 16px -2px rgba(42,21,18,0.08), 0 1px 3px rgba(42,21,18,0.04)", "purpose": "Resting elevation for cards, modals, chips — soft diffused warm shadow." },
+      { "name": "paper-card-hover", "value": "inset 0 1px 0 0 rgba(255,253,248,0.9), 0 8px 24px -4px rgba(42,21,18,0.12), 0 2px 6px rgba(42,21,18,0.06)", "purpose": "Hover elevation — lifts the card 1px with a slightly larger shadow." }
+    ],
+    "motion": [
+      { "name": "ease-state", "value": "all 0.2s ease", "purpose": "Default state transition for hover/active/focus." },
+      { "name": "lift-hover", "value": "translateY(-1px) 0.2s ease", "purpose": "Card and chip hover lift." }
+    ],
+    "breakpoints": [
+      { "name": "lg", "value": "1024px", "purpose": "Sidebar collapses to drawer scrim below this." }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The one terracota action per screen: sell, save, confirm.",
+      "html": "<button class=\"ds-btn-primary\">Registrar venta</button>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 36px; padding: 0 16px; border: none; border-radius: 9999px; background: #c53d24; color: #ffffff; font-family: 'Inter', ui-sans-serif, system-ui, sans-serif; font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.2s ease; } .ds-btn-primary:hover { background: #a01e1c; } .ds-btn-primary:active { transform: scale(0.98); } .ds-btn-primary:focus-visible { outline: none; box-shadow: 0 0 0 2px rgba(197,61,36,0.4); } .ds-btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "The quiet alternative: transparent paper with a warm hairline edge.",
+      "html": "<button class=\"ds-btn-secondary\">Cancelar</button>",
+      "css": ".ds-btn-secondary { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 36px; padding: 0 16px; border: 1px solid rgba(42,21,18,0.12); border-radius: 9999px; background: transparent; color: #2a1512; font-family: 'Inter', ui-sans-serif, system-ui, sans-serif; font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.2s ease; } .ds-btn-secondary:hover { border-color: rgba(42,21,18,0.22); background: rgba(197,61,36,0.08); } .ds-btn-secondary:focus-visible { outline: none; box-shadow: 0 0 0 2px rgba(197,61,36,0.4); }"
+    },
+    {
+      "name": "Paper Card",
+      "kind": "card",
+      "refersTo": "card-paper",
+      "description": "Warm white paper card with soft diffused shadow and inset top highlight.",
+      "html": "<div class=\"ds-card\"><h3 class=\"ds-card-title\">Ventas del mes</h3><p class=\"ds-card-body\">Datos del módulo.</p></div>",
+      "css": ".ds-card { position: relative; border-radius: 20px; border: 1px solid rgba(42,21,18,0.12); background: #fffdf8; box-shadow: inset 0 1px 0 0 rgba(255,253,248,0.9), 0 4px 16px -2px rgba(42,21,18,0.08), 0 1px 3px rgba(42,21,18,0.04); padding: 20px; transition: all 0.2s ease; font-family: 'Inter', ui-sans-serif, system-ui, sans-serif; color: #2a1512; } .ds-card:hover { border-color: rgba(42,21,18,0.22); box-shadow: inset 0 1px 0 0 rgba(255,253,248,0.9), 0 8px 24px -4px rgba(42,21,18,0.12), 0 2px 6px rgba(42,21,18,0.06); transform: translateY(-1px); } .ds-card-title { margin: 0 0 8px; font-family: 'Anton', ui-sans-serif, system-ui, sans-serif; font-weight: 400; letter-spacing: -0.02em; font-size: 16px; color: #2a1512; } .ds-card-body { margin: 0; font-size: 14px; color: rgba(42,21,18,0.72); }"
+    },
+    {
+      "name": "Input Field",
+      "kind": "input",
+      "refersTo": "input-field",
+      "description": "Light paper input with terracota focus ring.",
+      "html": "<input class=\"ds-input\" placeholder=\"Buscar producto...\" />",
+      "css": ".ds-input { width: 100%; height: 36px; padding: 0 12px; border: 1px solid rgba(42,21,18,0.12); border-radius: 12px; background: #fffdf8; color: #2a1512; font-family: 'Inter', ui-sans-serif, system-ui, sans-serif; font-size: 14px; color-scheme: light; transition: all 0.2s ease; } .ds-input::placeholder { color: rgba(42,21,18,0.68); } .ds-input:focus { outline: none; border-color: #c53d24; box-shadow: 0 0 0 1px #c53d24; } .ds-input:disabled { opacity: 0.6; cursor: not-allowed; }"
+    },
+    {
+      "name": "Sidebar Nav Item",
+      "kind": "nav",
+      "refersTo": "nav-sidebar",
+      "description": "Pill navigation on rosa pálido; active item is a terracota pill.",
+      "html": "<nav class=\"ds-nav\"><a class=\"ds-nav-item\">Menú principal</a><a class=\"ds-nav-item ds-nav-active\">Ventas</a><a class=\"ds-nav-item\">Proveedores</a></nav>",
+      "css": ".ds-nav { display: flex; flex-direction: column; gap: 4px; padding: 16px 12px; background: #e9d4d1; border-radius: 20px; font-family: 'Inter', ui-sans-serif, system-ui, sans-serif; } .ds-nav-item { display: flex; align-items: center; gap: 12px; padding: 10px 16px; border-radius: 9999px; font-size: 14px; font-weight: 500; color: rgba(42,21,18,0.72); text-decoration: none; transition: all 0.2s ease; } .ds-nav-item:hover { background: rgba(197,61,36,0.08); color: #2a1512; } .ds-nav-active { background: #c53d24; color: #ffffff; } .ds-nav-active:hover { background: #c53d24; color: #ffffff; }"
+    },
+    {
+      "name": "Price Change Chip",
+      "kind": "chip",
+      "refersTo": "chip-price-change",
+      "description": "The signature gate-board alert: naranja stays lit for price increases, green for decreases.",
+      "html": "<span class=\"ds-chip-up\">+8,5%</span> <span class=\"ds-chip-down\">-3,2%</span>",
+      "css": ".ds-chip-up, .ds-chip-down { display: inline-flex; align-items: center; padding: 2px 10px; border-radius: 9999px; font-family: 'Inter', ui-sans-serif, system-ui, sans-serif; font-size: 12px; font-weight: 600; } .ds-chip-up { background: rgba(252,137,61,0.1); color: #b2550f; } .ds-chip-down { background: rgba(37,122,55,0.1); color: #257a37; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "El Remate de Precios",
+    "overview": "El sistema toma el lenguaje vernáculo del remate argentino — etiquetas de precio perforadas, carteles de oferta en marker, el papel crema del comercio de barrio — y lo convierte en una interfaz de gestión luminosa y directa. Nada de dark glass ni grano fílmico: la superficie es papel, la tinta es borgoña oscuro, y el color de la oferta (naranja) está reservado para los eventos que el operador no puede dejar pasar: cambios de precio. El resultado se siente como una golosinería ordenada por un contador atento: cálido, legible de un vistazo, y con una sola voz tipográfica de oferta (Anton) para lo que tiene que gritar — el nombre de la marca, los títulos, los totales.",
+    "keyCharacteristics": [
+      "Fondo crema cálido (#f7fbf3) con superficies de papel rosa pálido (#e9d4d1) y blanco cremoso (#fffdf8)",
+      "Terracota (#c53d24) como único color de acción primaria; borgoña (#a01e1c) para profundidad y peligro",
+      "Naranja (#fc893d) reservado como alerta de cambio de precio — raro, por eso llama la atención",
+      "Anton para display (condensado, de oferta), Inter para cuerpo (trabajo, legible)",
+      "Formas pill y esquinas de 20px: etiquetas y tickets, no cajas técnicas",
+      "Sin glassmorphism, sin grano, sin sombras duras: profundidad por sombras suaves difuminadas"
+    ],
+    "rules": [
+      { "name": "La Regla del Naranja Reservado", "body": "El naranja #fc893d se usa en ≤2% de cualquier pantalla. Solo eventos de precio. Si aparece en otro lado, es un bug.", "section": "colors" },
+      { "name": "La Regla del Gritar Poco", "body": "Anton grita. Por eso solo marca, títulos y totales. Un párrafo en Anton es un cartel de oferta; el cuerpo en Inter es el negocio.", "section": "typography" }
+    ],
+    "dos": [
+      "Do usar naranja #fc893d SOLO para eventos de cambio de precio (Regla del Naranja Reservado).",
+      "Do mantener el piso de contraste ≥4.5:1 para texto y ≥3:1 para elementos gráficos — los tokens ink-dim (0.68) y ink-faint (0.55) ya lo garantizan.",
+      "Do usar Anton únicamente para marca, títulos de página y valores de KPI.",
+      "Do escribir los precios y totales con figuras tabulares legibles sobre blanco cremoso.",
+      "Do reutilizar los tokens de tint (hover-tint, row-tint, icon-tint, scrim) en vez de rgba literales."
+    ],
+    "donts": [
+      "Don't volver al dark glass, grano fílmico, ni sombras duras de bloque — el mundo es papel y luz.",
+      "Don't usar text-gradients ni blur como decoración.",
+      "Don't usar emoji como iconos ni mono como disfraz técnico.",
+      "Don't nombrar tokens con -on-dark en un tema claro — los nombres de token deben decir la verdad (ink, ink-muted, accent).",
+      "Don't inventar colores fuera de la paleta: cualquier hex nuevo debe ser la paleta o un derivado directo (alpha/hue oscurecido)."
+    ]
+  }
+}

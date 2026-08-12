@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import { BarChart3, Factory, LayoutDashboard, Menu, Percent, ShoppingCart, X } from 'lucide-react'
 import { useApp } from '../context/AppContext'
-import { GrainOverlay } from './ui'
 import { formatDate, todayISO } from '../utils/format'
 
 interface NavItem {
@@ -45,7 +44,7 @@ function isActive(item: NavItem, pathname: string): boolean {
 function NavList({ pathname, onNavigate }: { pathname: string; onNavigate?: () => void }) {
   return (
     <nav className="flex flex-1 flex-col gap-1 overflow-y-auto px-3 py-4">
-      <p className="px-4 pb-2 text-[11px] font-semibold uppercase tracking-wider text-[var(--color-faint-on-dark)]">
+      <p className="px-4 pb-2 text-[11px] font-semibold uppercase tracking-wider text-[var(--color-ink-dim)]">
         Menú principal
       </p>
       {mainNav.map((item) => {
@@ -58,8 +57,8 @@ function NavList({ pathname, onNavigate }: { pathname: string; onNavigate?: () =
             onClick={onNavigate}
             className={`flex items-center gap-3 rounded-full px-4 py-2.5 text-sm font-medium transition-all duration-200 ${
               active
-                ? 'bg-[var(--color-primary)] text-[var(--color-ink-on-dark)]'
-                : 'text-[var(--color-mute-on-dark)] hover:bg-white/5 hover:text-[var(--color-ink-on-dark)]'
+                ? 'bg-[var(--color-primary)] text-white'
+                : 'text-[var(--color-ink)] hover:bg-[var(--color-hover-tint)] hover:text-[var(--color-ink)]'
             }`}
           >
             <item.icon className="h-[18px] w-[18px] shrink-0" />
@@ -81,10 +80,8 @@ export default function Layout() {
 
   return (
     <div className="flex h-screen overflow-hidden">
-      <GrainOverlay />
-
       {/* Desktop sidebar */}
-      <aside className="hidden w-60 shrink-0 flex-col border-r border-[var(--color-hairline-dark)] bg-[var(--color-canvas)] lg:flex">
+      <aside className="hidden w-60 shrink-0 flex-col border-r border-[var(--color-hairline-dark)] bg-[var(--color-surface-deep)] lg:flex">
         <SidebarContent />
       </aside>
 
@@ -92,10 +89,10 @@ export default function Layout() {
       {mobileOpen && (
         <div className="fixed inset-0 z-50 lg:hidden">
           <div
-            className="absolute inset-0 bg-black/70"
+            className="absolute inset-0 bg-[var(--color-scrim)]"
             onClick={() => setMobileOpen(false)}
           />
-          <aside className="absolute inset-y-0 left-0 flex w-72 flex-col bg-[var(--color-canvas)]">
+          <aside className="absolute inset-y-0 left-0 flex w-72 flex-col bg-[var(--color-surface-deep)]">
             <SidebarContent onNavigate={() => setMobileOpen(false)} />
           </aside>
         </div>
@@ -107,26 +104,26 @@ export default function Layout() {
             <button
               type="button"
               onClick={() => setMobileOpen(true)}
-              className="rounded-full p-2 text-[var(--color-dim-on-dark)] hover:bg-white/5 hover:text-[var(--color-ink-on-dark)] lg:hidden"
+              className="rounded-full p-2 text-[var(--color-ink-dim)] hover:bg-[var(--color-hover-tint)] hover:text-[var(--color-ink)] lg:hidden"
               aria-label="Abrir menú"
             >
               <Menu className="h-5 w-5" />
             </button>
-            <h1 className="font-[var(--font-display)] text-xl tracking-tight text-[var(--color-ink-on-dark)]">
+            <h1 className="font-[var(--font-display)] text-xl tracking-tight text-[var(--color-ink)]">
               {pageTitle(location.pathname)}
             </h1>
           </div>
           <div className="flex items-center gap-3">
-            <span className="hidden text-sm text-[var(--color-dim-on-dark)] sm:block">
+            <span className="hidden text-sm text-[var(--color-ink-dim)] sm:block">
               {formatDate(todayISO())}
             </span>
-            <div className="flex items-center gap-2 rounded-full border border-[var(--color-hairline-dark)] bg-[var(--color-surface-deep)] px-3 py-1.5">
+            <div className="flex items-center gap-2 rounded-full border border-[var(--color-hairline-dark)] bg-[var(--color-surface-elevated)] px-3 py-1.5">
               <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[var(--color-primary)] text-xs font-semibold text-white">
                 A
               </span>
               <div className="hidden leading-tight sm:block">
-                <p className="text-xs font-medium text-[var(--color-ink-on-dark)]">Administrador</p>
-                <p className="text-[11px] text-[var(--color-dim-on-dark)]">admin@golosinasdelremate.com.ar</p>
+                <p className="text-xs font-medium text-[var(--color-ink)]">Administrador</p>
+                <p className="text-[11px] text-[var(--color-ink-dim)]">admin@golosinasdelremate.com.ar</p>
               </div>
             </div>
           </div>
@@ -136,7 +133,7 @@ export default function Layout() {
           <Outlet />
         </main>
 
-        <footer className="shrink-0 border-t border-[var(--color-hairline-dark)] px-6 py-3 text-center text-xs text-[var(--color-dim-on-dark)]">
+        <footer className="shrink-0 bg-[var(--color-primary)] px-6 py-3 text-center text-xs font-medium text-white">
           Golosinas del Remate · Sistema de gestión · Prototipo demostrativo
         </footer>
       </div>
@@ -152,14 +149,14 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
     <>
       <div className="flex h-16 shrink-0 items-center gap-2.5 border-b border-[var(--color-hairline-dark)] px-6">
         <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-[var(--color-primary)]" />
-        <span className="truncate font-[var(--font-display)] text-base font-semibold tracking-wide text-[var(--color-ink-on-dark)]">
+        <span className="truncate font-[var(--font-display)] text-base font-normal tracking-wide text-[var(--color-ink)]">
           Golosinas del <span className="text-[var(--color-primary)]">Remate</span>
         </span>
         {onNavigate && (
           <button
             type="button"
             onClick={onNavigate}
-            className="ml-auto rounded-full p-1 text-[var(--color-dim-on-dark)] hover:text-[var(--color-ink-on-dark)] lg:hidden"
+            className="ml-auto rounded-full p-1 text-[var(--color-ink-dim)] hover:text-[var(--color-ink)] lg:hidden"
             aria-label="Cerrar menú"
           >
             <X className="h-5 w-5" />
@@ -175,10 +172,10 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
             {initials}
           </span>
           <span className="min-w-0">
-            <span className="block truncate text-sm font-medium text-[var(--color-ink-on-dark)]">
+            <span className="block truncate text-sm font-medium text-[var(--color-ink)]">
               {state.settings.user}
             </span>
-            <span className="block truncate text-xs text-[var(--color-dim-on-dark)]">
+            <span className="block truncate text-xs text-[var(--color-ink-dim)]">
               {state.settings.businessName}
             </span>
           </span>

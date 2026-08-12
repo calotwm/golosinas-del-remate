@@ -23,12 +23,12 @@ type ButtonSize = 'sm' | 'md'
 
 const buttonVariants: Record<ButtonVariant, string> = {
   primary:
-    'bg-[var(--color-primary)] text-[var(--color-ink-on-dark)] hover:brightness-110 active:scale-[0.98]',
+    'bg-[var(--color-primary)] text-white hover:brightness-110 active:scale-[0.98]',
   secondary:
-    'border border-[var(--color-hairline-dark)] bg-transparent text-[var(--color-ink-on-dark)] hover:border-[var(--color-hairline-strong)] hover:bg-white/5',
-  danger: 'bg-[var(--color-danger)] text-[var(--color-ink-on-dark)] hover:brightness-110 active:scale-[0.98]',
-  ghost: 'text-[var(--color-mute-on-dark)] hover:bg-white/5 hover:text-[var(--color-ink-on-dark)]',
-  'danger-ghost': 'text-[var(--color-danger)] hover:bg-white/5',
+    'border border-[var(--color-hairline-dark)] bg-transparent text-[var(--color-ink)] hover:border-[var(--color-hairline-strong)] hover:bg-[var(--color-hover-tint)]',
+  danger: 'bg-[var(--color-primary-deep)] text-white hover:brightness-110 active:scale-[0.98]',
+  ghost: 'text-[var(--color-ink)] hover:bg-[var(--color-hover-tint)] hover:text-[var(--color-ink)]',
+  'danger-ghost': 'text-[var(--color-danger)] hover:bg-[var(--color-danger-tint)]',
 }
 
 export function Button({
@@ -67,10 +67,10 @@ export function Card({
   children: ReactNode
 }) {
   return (
-    <section className={`rounded-[20px] border border-[var(--color-hairline-dark)] bg-[var(--color-surface-elevated)] ${className}`}>
+    <section className={`rounded-[20px] border border-[var(--color-hairline-dark)] bg-[var(--color-surface-elevated)] shadow-[0_4px_16px_-2px_rgba(42,21,18,0.08),0_1px_3px_rgba(42,21,18,0.04),inset_0_1px_0_0_rgba(255,253,248,0.9)] ${className}`}>
       {(title || actions) && (
         <header className="flex items-center justify-between gap-3 border-b border-[var(--color-hairline-dark)] px-5 py-3.5">
-          <h3 className="font-[var(--font-display)] text-sm font-semibold tracking-tight text-[var(--color-ink-on-dark)]">
+          <h3 className="font-[var(--font-display)] text-sm font-normal tracking-tight text-[var(--color-ink)]">
             {title}
           </h3>
           {actions}
@@ -119,21 +119,21 @@ export function Modal({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/70 p-4 sm:py-10">
+    <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-[var(--color-scrim)] p-4 sm:py-10">
       <div
-        className={`w-full ${sizes[size]} rounded-[20px] border border-[var(--color-hairline-dark)] bg-[var(--color-surface-elevated)]`}
+        className={`w-full ${sizes[size]} rounded-[20px] border border-[var(--color-hairline-dark)] bg-[var(--color-surface-elevated)] shadow-[0_8px_32px_-4px_rgba(42,21,18,0.16)]`}
         role="dialog"
         aria-modal="true"
       >
         <header className="flex items-start justify-between gap-4 border-b border-[var(--color-hairline-dark)] px-5 py-4">
           <div>
-            <h2 className="font-[var(--font-display)] text-lg tracking-tight text-[var(--color-ink-on-dark)]">{title}</h2>
-            {subtitle && <p className="mt-0.5 text-sm text-[var(--color-dim-on-dark)]">{subtitle}</p>}
+            <h2 className="font-[var(--font-display)] text-lg tracking-tight text-[var(--color-ink)]">{title}</h2>
+            {subtitle && <p className="mt-0.5 text-sm text-[var(--color-ink-dim)]">{subtitle}</p>}
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="rounded-full p-1 text-[var(--color-dim-on-dark)] transition-colors hover:bg-white/5 hover:text-[var(--color-ink-on-dark)]"
+            className="rounded-full p-1 text-[var(--color-ink-dim)] transition-colors hover:bg-[var(--color-hover-tint)] hover:text-[var(--color-ink)]"
             aria-label="Cerrar"
           >
             <X className="h-5 w-5" />
@@ -141,7 +141,7 @@ export function Modal({
         </header>
         <div className="max-h-[70vh] overflow-y-auto px-5 py-4">{children}</div>
         {footer && (
-          <footer className="flex items-center justify-end gap-2 rounded-b-[20px] border-t border-[var(--color-hairline-dark)] bg-[var(--color-surface-deep)] px-5 py-3.5">
+          <footer className="flex items-center justify-end gap-2 rounded-b-[20px] border-t border-[var(--color-hairline-dark)] bg-[var(--color-canvas)] px-5 py-3.5">
             {footer}
           </footer>
         )}
@@ -197,13 +197,13 @@ export function ConfirmDialog({
     >
       <div className="flex items-start gap-3">
         <div
-          className={`mt-0.5 rounded-full bg-white/5 p-2 ${
+          className={`mt-0.5 rounded-full bg-[var(--color-hover-tint)] p-2 ${
             tone === 'danger' ? 'text-[var(--color-danger)]' : 'text-[var(--color-primary)]'
           }`}
         >
           <AlertTriangle className="h-5 w-5" />
         </div>
-        <div className="text-sm text-[var(--color-mute-on-dark)]">{message}</div>
+        <div className="text-sm text-[var(--color-ink-muted)]">{message}</div>
       </div>
     </Modal>
   )
@@ -224,18 +224,18 @@ export function Field({
 }) {
   return (
     <label className="block">
-      <span className="mb-1.5 block text-sm font-medium text-[var(--color-mute-on-dark)]">
+      <span className="mb-1.5 block text-sm font-medium text-[var(--color-ink-muted)]">
         {label}
         {required && <span className="text-[var(--color-primary)]"> *</span>}
       </span>
       {children}
-      {hint && <span className="mt-1 block text-xs text-[var(--color-dim-on-dark)]">{hint}</span>}
+      {hint && <span className="mt-1 block text-xs text-[var(--color-ink-dim)]">{hint}</span>}
     </label>
   )
 }
 
 const inputBase =
-  'w-full h-9 rounded-[12px] border border-[var(--color-hairline-dark)] bg-[var(--color-surface-deep)] px-3 text-sm text-[var(--color-ink-on-dark)] placeholder:text-[var(--color-dim-on-dark)] [color-scheme:dark] focus:border-[var(--color-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--color-primary)] disabled:opacity-60 disabled:cursor-not-allowed'
+  'w-full h-9 rounded-[12px] border border-[var(--color-hairline-dark)] bg-[var(--color-surface-elevated)] px-3 text-sm text-[var(--color-ink)] placeholder:text-[var(--color-ink-dim)] [color-scheme:light] focus:border-[var(--color-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--color-primary)] disabled:opacity-60 disabled:cursor-not-allowed'
 
 export function Input({
   className = '',
@@ -264,7 +264,7 @@ export function SearchInput({
 }) {
   return (
     <div className="relative">
-      <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--color-dim-on-dark)]" />
+      <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--color-ink-dim)]" />
       <input
         type="text"
         value={value}
@@ -276,7 +276,7 @@ export function SearchInput({
         <button
           type="button"
           onClick={() => onChange('')}
-          className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full p-0.5 text-[var(--color-dim-on-dark)] hover:text-[var(--color-ink-on-dark)]"
+          className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full p-0.5 text-[var(--color-ink-dim)] hover:text-[var(--color-ink)]"
           aria-label="Limpiar búsqueda"
         >
           <X className="h-4 w-4" />
@@ -289,12 +289,13 @@ export function SearchInput({
 /* ---------------------------------- Badge ---------------------------------- */
 
 const badgeStyles: Record<string, string> = {
-  green: 'border-[rgba(34,197,94,0.35)] text-[var(--color-success)]',
-  gray: 'border-[rgba(255,255,255,0.2)] text-[var(--color-mute-on-dark)]',
-  red: 'border-[rgba(239,68,68,0.35)] text-[var(--color-danger)]',
-  blue: 'border-[rgba(96,165,250,0.35)] text-[#60a5fa]',
-  amber: 'border-[rgba(234,179,8,0.35)] text-[var(--color-warning)]',
-  purple: 'border-[rgba(167,139,250,0.35)] text-[#a78bfa]',
+  green: 'border-[rgba(43,138,62,0.3)] text-[var(--color-success)]',
+  gray: 'border-[var(--color-hairline-dark)] text-[var(--color-ink-muted)]',
+  red: 'border-[rgba(160,30,28,0.3)] text-[var(--color-danger)]',
+  naranja: 'border-[rgba(252,137,61,0.35)] text-[var(--color-accent-deep)]',
+  blue: 'border-[rgba(37,99,235,0.3)] text-[#2563eb]',
+  amber: 'border-[rgba(180,83,9,0.3)] text-[var(--color-warning)]',
+  purple: 'border-[rgba(126,87,194,0.3)] text-[#6d4c9f]',
 }
 
 export function Badge({
@@ -330,7 +331,7 @@ export function Table({ children }: { children: ReactNode }) {
 export function THead({ children }: { children: ReactNode }) {
   return (
     <thead>
-      <tr className="sticky top-0 z-10 border-b border-[var(--color-hairline-dark)] bg-[var(--color-surface-deep)] text-left text-xs uppercase tracking-wide text-[var(--color-dim-on-dark)]">
+      <tr className="sticky top-0 z-10 border-b border-[var(--color-hairline-dark)] bg-[var(--color-surface-deep)] text-left text-xs uppercase tracking-wide text-[var(--color-ink-muted)]">
         {children}
       </tr>
     </thead>
@@ -342,11 +343,11 @@ export function Th({ children, className = '' }: { children?: ReactNode; classNa
 }
 
 export function Td({ children, className = '' }: { children?: ReactNode; className?: string }) {
-  return <td className={`border-b border-white/[0.06] px-4 py-2.5 align-middle text-[var(--color-mute-on-dark)] ${className}`}>{children}</td>
+  return <td className={`border-b border-[var(--color-hairline-dark)] px-4 py-2.5 align-middle text-[var(--color-ink-muted)] ${className}`}>{children}</td>
 }
 
 export function TBody({ children }: { children: ReactNode }) {
-  return <tbody className="divide-y divide-white/[0.06]">{children}</tbody>
+  return <tbody className="divide-y divide-[var(--color-hairline-dark)]">{children}</tbody>
 }
 
 /* -------------------------------- EmptyState ------------------------------- */
@@ -363,12 +364,12 @@ export function EmptyState({
   action?: ReactNode
 }) {
   return (
-    <div className="flex flex-col items-center justify-center rounded-[16px] border border-dashed border-[var(--color-hairline-dark)] bg-[var(--color-surface-deep)]/60 px-6 py-12 text-center">
-      <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-full bg-white/5 text-[var(--color-dim-on-dark)] ring-1 ring-[var(--color-hairline-dark)]">
+    <div className="flex flex-col items-center justify-center rounded-[16px] border border-dashed border-[var(--color-hairline-dark)] bg-[var(--color-surface-tint)] px-6 py-12 text-center">
+      <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-full bg-[var(--color-hover-tint)] text-[var(--color-primary)] ring-1 ring-[var(--color-hairline-dark)]">
         {icon ?? <Info className="h-5 w-5" />}
       </div>
-      <p className="text-sm font-semibold text-[var(--color-ink-on-dark)]">{title}</p>
-      {description && <p className="mt-1 max-w-sm text-sm text-[var(--color-dim-on-dark)]">{description}</p>}
+      <p className="text-sm font-semibold text-[var(--color-ink)]">{title}</p>
+      {description && <p className="mt-1 max-w-sm text-sm text-[var(--color-ink-dim)]">{description}</p>}
       {action && <div className="mt-4">{action}</div>}
     </div>
   )
@@ -388,91 +389,20 @@ export function StatCard({
   sub?: ReactNode
 }) {
   return (
-    <div className="rounded-[20px] border border-[var(--color-hairline-dark)] bg-[var(--color-surface-elevated)] p-4">
+    <div className="rounded-[20px] border border-[var(--color-hairline-dark)] bg-[var(--color-surface-elevated)] p-4 shadow-[0_2px_8px_-1px_rgba(42,21,18,0.06),inset_0_1px_0_0_rgba(255,253,248,0.9)]">
       <div className="flex items-start justify-between gap-2">
         <div className="min-w-0">
-          <p className="truncate text-xs font-medium uppercase tracking-wide text-[var(--color-dim-on-dark)]">{label}</p>
-          <p className="mt-1.5 truncate font-[var(--font-display)] text-2xl font-medium tracking-tight text-[var(--color-ink-on-dark)]">{value}</p>
-          {sub && <div className="mt-1 text-xs text-[var(--color-dim-on-dark)]">{sub}</div>}
+          <p className="truncate text-xs font-medium uppercase tracking-wide text-[var(--color-ink-dim)]">{label}</p>
+          <p className="mt-1.5 truncate font-[var(--font-display)] text-2xl font-normal tracking-tight text-[var(--color-ink)]">{value}</p>
+          {sub && <div className="mt-1 text-xs text-[var(--color-ink-dim)]">{sub}</div>}
         </div>
         {icon && (
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[var(--color-primary)]/10 text-[var(--color-primary)]">
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[var(--color-hover-tint)] text-[var(--color-primary)]">
             {icon}
           </div>
         )}
       </div>
     </div>
-  )
-}
-
-/* ---------------------------------- KpiCard -------------------------------- */
-
-export function KpiCard({
-  label,
-  value,
-  subtitle,
-  trend,
-  variant = 'default',
-}: {
-  label: string
-  value: string
-  subtitle?: string
-  trend?: string
-  variant?: 'default' | 'glass'
-}) {
-  const isGlass = variant === 'glass'
-  const baseClass = isGlass
-    ? 'glass-card p-8'
-    : 'group relative overflow-hidden rounded-[20px] border border-[var(--color-hairline-dark)] bg-[var(--color-surface-elevated)] p-8 transition-all duration-200 hover:-translate-y-0.5 hover:border-[rgba(255,255,255,0.25)]'
-
-  return (
-    <div className={baseClass}>
-      {!isGlass && (
-        <div
-          className="pointer-events-none absolute inset-0"
-          style={{ background: 'var(--gradient-surface)' }}
-        />
-      )}
-      <div className="absolute left-0 top-0 h-[3px] w-full bg-[var(--color-primary)]" />
-      <p className="relative text-sm font-medium text-[var(--color-mute-on-dark)]">
-        {label}
-      </p>
-      <p className="relative mt-3 font-[var(--font-display)] text-2xl font-medium tracking-tight text-[var(--color-ink-on-dark)]">
-        {value}
-      </p>
-      {subtitle && (
-        <p className="relative mt-1.5 text-xs text-[var(--color-dim-on-dark)]">
-          {subtitle}
-        </p>
-      )}
-      {trend && (
-        <p className="relative mt-1.5 text-xs font-medium text-[var(--color-success)]">
-          {trend}
-        </p>
-      )}
-    </div>
-  )
-}
-
-/* ------------------------------- GrainOverlay ------------------------------ */
-
-// Film grain overlay — sits ABOVE all content (z-[100]), pointer-events-none,
-// screen blend so it's visible on dark backgrounds.
-const GRAIN_URI = `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0.5  0 0 0 0 0.5  0 0 0 0 0.5  0 0 0 0.6 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`
-
-export function GrainOverlay() {
-  return (
-    <div
-      aria-hidden="true"
-      className="pointer-events-none fixed inset-0 z-[100]"
-      style={{
-        backgroundImage: GRAIN_URI,
-        backgroundRepeat: 'repeat',
-        backgroundSize: '256px 256px',
-        opacity: 0.15,
-        mixBlendMode: 'screen',
-      }}
-    />
   )
 }
 
@@ -514,10 +444,10 @@ export function ToastProvider({ children }: { children: ReactNode }) {
         {toasts.map((t) => (
           <div
             key={t.id}
-            className="pointer-events-auto flex items-start gap-3 rounded-[12px] border border-[var(--color-hairline-dark)] bg-[var(--color-surface-elevated)] px-4 py-3"
+            className="pointer-events-auto flex items-start gap-3 rounded-[12px] border border-[var(--color-hairline-dark)] bg-[var(--color-surface-elevated)] px-4 py-3 shadow-[0_4px_12px_-2px_rgba(42,21,18,0.1)]"
           >
             <span className="mt-0.5 shrink-0">{icons[t.type]}</span>
-            <p className="text-sm text-[var(--color-ink-on-dark)]">{t.message}</p>
+            <p className="text-sm text-[var(--color-ink)]">{t.message}</p>
           </div>
         ))}
       </div>

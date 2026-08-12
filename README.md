@@ -1,6 +1,6 @@
 # Golosinas del Remate — Sistema de Gestión Mayorista
 
-Prototipo visual de un sistema web de gestión para un mayorista de golosinas, con el **template UrquiSoft** (dark high-contrast design system). Interfaz profesional, datos ficticios realistas y navegación e interacciones simuladas, pensada para demostrarle al cliente cómo sería el sistema terminado.
+Prototipo visual de un sistema web de gestión para un mayorista de golosinas, con estética **"remate argentino"** (tema claro y cálido). Interfaz profesional, datos ficticios realistas y navegación e interacciones simuladas, pensada para demostrarle al cliente cómo sería el sistema terminado.
 
 ## Demo
 
@@ -25,13 +25,13 @@ Cada venta guarda el **precio unitario utilizado al momento de la venta** (snaps
 
 Al registrar una venta (y desde el historial), se puede generar un **PDF tipo factura**: banda roja con razón social y datos del negocio, número de venta, fecha, forma de pago, detalle de productos con cantidades, precios unitarios y subtotales, y fila TOTAL.
 
-## Diseño (template UrquiSoft)
+## Diseño (mundo "remate argentino")
 
-- Canvas negro puro, superficies elevadas con bordes hairline, sin sombras
-- Acento rojo usado con moderación (acciones primarias, navegación activa)
-- Tipografía Space Grotesk (títulos) + Inter (cuerpo)
-- Botones pill, tarjetas redondeadas, grano fílmico sutil
-- Gráficos y tablas adaptados al dark theme
+- Canvas crema (#f7fbf3), superficies de papel rosa pálido (#e9d4d1) y blanco cremoso (#fffdf8)
+- Paleta cálida: terracota (#c53d24) acciones primarias, borgoña (#a01e1c) profundidad/peligro, naranja (#fc893d) reservado para alertas de cambio de precio
+- Tipografía Anton (display) + Inter (cuerpo)
+- Botones pill, tarjetas papel redondeadas (20px), sombras suaves difuminadas, sin glass ni grano
+- Gráficos y tablas adaptados al tema claro; sistema documentado en `PRODUCT.md` y `DESIGN.md`
 
 ## Stack
 

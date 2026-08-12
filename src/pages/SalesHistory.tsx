@@ -98,13 +98,16 @@ export default function SalesHistory() {
               {filtered.map((s) => (
                 <tr
                   key={s.id}
-                  className="cursor-pointer transition-colors hover:bg-white/[0.03]"
+                  tabIndex={0}
+                  role="button"
+                  className="cursor-pointer transition-colors hover:bg-[var(--color-row-tint)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]/40"
                   onClick={() => setSelected(s)}
+                  onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setSelected(s); } }}
                 >
                   <Td className="font-medium text-[var(--color-primary)]">#{s.number}</Td>
                   <Td>{formatDate(s.date)}</Td>
                   <Td className="text-right tabular-nums">{formatNumber(quantityOf(s))}</Td>
-                  <Td className="text-right font-medium tabular-nums text-[var(--color-ink-on-dark)]">{formatARS(s.total)}</Td>
+                  <Td className="text-right font-medium tabular-nums text-[var(--color-ink)]">{formatARS(s.total)}</Td>
                   <Td>{s.paymentMethod}</Td>
                   <Td>
                     {s.status === 'Completada' ? (
@@ -121,7 +124,7 @@ export default function SalesHistory() {
                         e.stopPropagation()
                         generateSaleInvoicePdf(s, settings)
                       }}
-                      className="rounded-md p-1.5 text-[var(--color-dim-on-dark)] transition-colors hover:bg-white/5 hover:text-[var(--color-primary)]"
+                      className="rounded-md p-1.5 text-[var(--color-ink-dim)] transition-colors hover:bg-[var(--color-hover-tint)] hover:text-[var(--color-primary)]"
                     >
                       <Printer className="h-4 w-4" />
                     </button>
@@ -180,7 +183,7 @@ export default function SalesHistory() {
               ) : (
                 <Badge tone="amber">Anulada</Badge>
               )}
-              <span className="rounded-full border border-[var(--color-hairline-dark)] px-2.5 py-0.5 text-sm text-[var(--color-mute-on-dark)]">
+              <span className="rounded-full border border-[var(--color-hairline-dark)] px-2.5 py-0.5 text-sm text-[var(--color-ink-muted)]">
                 {selected.items.length} líneas de detalle
               </span>
             </div>
@@ -188,20 +191,20 @@ export default function SalesHistory() {
             <div className="overflow-x-auto rounded-[16px] border border-[var(--color-hairline-dark)]">
               <table className="w-full border-collapse text-sm">
                 <thead>
-                  <tr className="border-b border-[var(--color-hairline-dark)] bg-[var(--color-surface-deep)] text-left text-xs uppercase tracking-wide text-[var(--color-dim-on-dark)]">
+                  <tr className="border-b border-[var(--color-hairline-dark)] bg-[var(--color-surface-deep)] text-left text-xs uppercase tracking-wide text-[var(--color-ink-muted)]">
                     <th className="px-4 py-3 font-semibold">Producto</th>
                     <th className="px-4 py-3 text-right font-semibold">Precio unitario</th>
                     <th className="px-4 py-3 text-center font-semibold">Cantidad</th>
                     <th className="px-4 py-3 text-right font-semibold">Subtotal</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-white/[0.06]">
+                <tbody className="divide-y divide-[var(--color-hairline-dark)]">
                   {selected.items.map((it, i) => (
                     <tr key={i}>
-                      <td className="px-4 py-2.5 font-medium text-[var(--color-ink-on-dark)]">{it.productName}</td>
+                      <td className="px-4 py-2.5 font-medium text-[var(--color-ink)]">{it.productName}</td>
                       <td className="px-4 py-2.5 text-right tabular-nums">{formatARS(it.unitPrice)}</td>
                       <td className="px-4 py-2.5 text-center tabular-nums">{formatNumber(it.quantity)}</td>
-                      <td className="px-4 py-2.5 text-right tabular-nums text-[var(--color-ink-on-dark)]">
+                      <td className="px-4 py-2.5 text-right tabular-nums text-[var(--color-ink)]">
                         {formatARS(it.subtotal)}
                       </td>
                     </tr>
@@ -211,10 +214,10 @@ export default function SalesHistory() {
             </div>
 
             <div className="flex items-center justify-between rounded-[12px] border border-[var(--color-hairline-dark)] bg-[var(--color-surface-deep)] px-4 py-3">
-              <span className="text-sm text-[var(--color-mute-on-dark)]">
+              <span className="text-sm text-[var(--color-ink-muted)]">
                 Total {selected.paymentMethod} · precios de venta al {formatDate(selected.date)}
               </span>
-              <span className="font-[var(--font-display)] text-lg font-medium tabular-nums text-[var(--color-ink-on-dark)]">
+              <span className="font-[var(--font-display)] text-lg font-normal tabular-nums text-[var(--color-ink)]">
                 {formatARS(round2(selected.total))}
               </span>
             </div>

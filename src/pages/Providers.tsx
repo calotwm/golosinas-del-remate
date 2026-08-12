@@ -83,8 +83,11 @@ export default function Providers() {
               {providers.map((p) => (
                 <tr
                   key={p.id}
-                  className="cursor-pointer transition-colors hover:bg-white/[0.03]"
+                  tabIndex={0}
+                  role="button"
+                  className="cursor-pointer transition-colors hover:bg-[var(--color-row-tint)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]/40"
                   onClick={() => navigate(`/proveedores/${p.id}`)}
+                  onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navigate(`/proveedores/${p.id}`); } }}
                 >
                   <Td className="font-medium text-[var(--color-primary)]">{p.name}</Td>
                   <Td className="tabular-nums">{p.cuit}</Td>
@@ -145,7 +148,7 @@ export default function Providers() {
           </Field>
         </div>
         {error && (
-          <p className="mt-3 rounded-[12px] border border-[rgba(239,68,68,0.3)] bg-[rgba(239,68,68,0.08)] px-3 py-2 text-sm text-[var(--color-danger)]">{error}</p>
+          <p className="mt-3 rounded-[12px] border border-[rgba(160,30,28,0.3)] bg-[var(--color-danger-tint-soft)] px-3 py-2 text-sm text-[var(--color-danger)]">{error}</p>
         )}
       </Modal>
     </div>
